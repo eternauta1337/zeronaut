@@ -1,11 +1,14 @@
-fn main(x: Field, y: pub Field) {
-    assert(x != y);
+fn main(password: str<8>) {
+    assert(password == "zeronaut");
 }
 
 #[test]
 fn test_main() {
-    main(1, 2);
-
-    // Uncomment to make test fail
-    // main(1, 1);
+    main("zeronaut");
 }
+
+#[test(should_fail)]
+fn test_main_failure() {
+    main("poopnaut");
+}
+
