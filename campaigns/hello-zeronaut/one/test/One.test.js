@@ -69,7 +69,10 @@ describe('One', function () {
 
     // Verify the proof
     const verification = await noirBackend.verifyProof(proofData);
-    console.log('Verification:', verification);
+    if (!verification) {
+      throw new Error('Proof verification failed');
+    }
+    // console.log('Verification:', verification);
 
     return {
       proof: '0x' + Buffer.from(proofData.proof).toString('hex'),

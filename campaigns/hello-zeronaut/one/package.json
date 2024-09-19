@@ -10,9 +10,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@noir-lang/backend_barretenberg": "^0.34.0",
+    "@noir-lang/backend_barretenberg": "0.31.0",
     "@noir-lang/noir_codegen": "^0.34.0",
-    "@noir-lang/noir_js": "^0.34.0",
+    "@noir-lang/noir_js": "0.31.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
     "hardhat": "^2.22.10"
   }
