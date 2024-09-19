@@ -2775,3 +2775,4 @@ contract UltraVerifier is BaseUltraVerifier {
         UltraVerificationKey.loadVerificationKey(vk, _omegaInverseLoc);
     }
 }
+

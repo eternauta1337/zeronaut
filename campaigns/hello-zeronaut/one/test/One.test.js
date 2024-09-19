@@ -1,8 +1,29 @@
 const hre = require('hardhat');
 const { expect } = require('chai');
+const fs = require('fs');
+
+let noirFrontend, noirBackend;
 
 describe('One', function () {
   let level, verifier;
+
+  before('load Noir module', async function () {
+    const { Noir } = await import('@noir-lang/noir_js');
+    const { BarretenbergBackend } = await import(
+      '@noir-lang/backend_barretenberg'
+    );
+
+    const circuit = JSON.parse(
+      fs.readFileSync('./circuits/export/main.json', 'utf8')
+    );
+    noirFrontend = new Noir(circuit);
+    noirBackend = new BarretenbergBackend(circuit);
+  });
+
+  before('setup', async function () {
+    verifier = await hre.ethers.deployContract('UltraVerifier');
+    level = await hre.ethers.deployContract('One', [verifier.target]);
+  });
 
   function loadProof() {
     const fs = require('fs');
@@ -37,15 +58,35 @@ describe('One', function () {
     }
   }
 
-  before('setup', async function () {
-    verifier = await hre.ethers.deployContract('UltraVerifier');
-    level = await hre.ethers.deployContract('One', [verifier.target]);
-  });
+  async function generateProof(password) {
+    // Generate a witness for the circuit
+    const { witness } = await noirFrontend.execute({ password });
+    // console.log('Witness:', witness);
+
+    // Generate a proof for the witness
+    const proofData = await noirBackend.generateProof(witness);
+    // console.log('Proof:', proofData);
+
+    // Verify the proof
+    const verification = await noirBackend.verifyProof(proofData);
+    console.log('Verification:', verification);
+
+    return {
+      proof: '0x' + Buffer.from(proofData.proof).toString('hex'),
+      publicInputs: [],
+    };
+  }
 
   describe('submitting a valid proof', function () {
     it('should return true', async function () {
-      const { publicInputs, proof } = loadProof();
+      // Retrieve or build a proof
+      // const { proof, publicInputs } = loadProof();
+      const { proof, publicInputs } = await generateProof('zeronaut');
+      // console.log('proof:', proof);
+
+      // Submit the proof to the level contract
       const result = await level.check(proof, publicInputs);
+
       expect(result).to.be.true;
     });
   });

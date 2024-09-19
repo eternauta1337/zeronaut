@@ -1,3 +1,4 @@
+#[export]
 fn main(password: str<8>) {
     assert(password == "zeronaut");
 }
