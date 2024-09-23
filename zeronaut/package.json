@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "deploy": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost"
   },
   "keywords": [],
   "author": "",
