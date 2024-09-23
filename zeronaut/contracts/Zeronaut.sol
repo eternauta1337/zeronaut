@@ -36,6 +36,10 @@ contract Zeronaut {
         return campaigns[id];
     }
 
+    function getLevelInstructions(address level) public view returns (string memory) {
+        return ILevel(level).instructions();
+    }
+
     function checkLevel(address level, bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
         return ILevel(level).check(proof, publicInputs);
     }

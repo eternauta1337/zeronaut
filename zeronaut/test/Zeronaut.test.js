@@ -54,6 +54,14 @@ describe('Zeronaut', function () {
         });
 
         describe('when playing the level', () => {
+          it('should display the level instructions', async () => {
+            const instructions = await zeronaut.getLevelInstructions(
+              level.target
+            );
+
+            expect(instructions).to.equal('Dummy level instructions');
+          });
+
           describe('and the proof is incorrect', () => {
             it('returns false', async () => {
               const proof = ethers.encodeBytes32String('poop');
