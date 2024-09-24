@@ -18,14 +18,21 @@ contract Zeronaut {
     }
 
     function createLevel(bytes32 campaignId, address addr) public onlyCampaignOwner(campaignId) {
+        // Check if the campaign exists
+        require(campaigns[campaignId].id != bytes32(0), "Campaign does not exist");
+
+        // Check if the level is not already in the campaign
         Campaign storage campaign = campaigns[campaignId];
-        // TODO: check if the campaign exists
+        for (uint i = 0; i < campaign.levels.length; i++) {
+            require(campaign.levels[i] != addr, "Level already in campaign");
+        }
 
         campaign.levels.push(addr);
     }
 
     function createCampaign(bytes32 id) public {
         // TODO: check if id is already taken
+        require(campaigns[id].owner == address(0), "Campaign id already taken");
 
         Campaign storage newCampaign = campaigns[id];
         newCampaign.id = id;
@@ -34,6 +41,10 @@ contract Zeronaut {
 
     function getCampaign(bytes32 id) public view returns (Campaign memory) {
         return campaigns[id];
+    }
+
+    function getLevelName(address level) public view returns (bytes32) {
+        return ILevel(level).name();
     }
 
     function getLevelInstructions(address level) public view returns (string memory) {

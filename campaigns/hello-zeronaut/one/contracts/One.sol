@@ -1,15 +1,20 @@
-// SPDX-License-iDEntifier: UNLICENSED
-pragma solidity ^0.8.24;
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.27;
 
 import "hardhat/console.sol";
 
 import "./Verifier.sol";
+import {ILevel} from "zeronaut/contracts/interfaces/ILevel.sol";
 
-contract One {
+contract One is ILevel {
     UltraVerifier verifier;
 
     constructor(address _verifier) payable {
         verifier = UltraVerifier(_verifier);
+    }
+
+    function name() public pure returns (bytes32) {
+        return "One";
     }
 
     function instructions() public pure returns (string memory) {

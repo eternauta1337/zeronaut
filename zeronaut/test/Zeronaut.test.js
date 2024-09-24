@@ -29,6 +29,14 @@ describe('Zeronaut', function () {
         expect(campaign.owner).to.equal(owner.address);
       });
 
+      describe('when a campaign with the same id is created', () => {
+        it('reverts', async () => {
+          await expect(zeronaut.createCampaign(campaignId)).to.be.revertedWith(
+            'Campaign id already taken'
+          );
+        });
+      });
+
       describe('when a non owner tries to create a level', () => {
         it('reverts', async () => {
           await expect(
@@ -45,6 +53,12 @@ describe('Zeronaut', function () {
           level = await factory.deploy();
 
           await zeronaut.createLevel(campaignId, level.target);
+        });
+
+        it('should display the level name', async () => {
+          const name = await zeronaut.getLevelName(level.target);
+
+          expect(name).to.equal(ethers.encodeBytes32String('Dummy Level'));
         });
 
         it('should display the level', async () => {

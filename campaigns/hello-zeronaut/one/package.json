@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "deploy": "hardhat ignition deploy ignition/modules/One.js --network localhost"
+    "deploy": "hardhat ignition deploy ignition/modules/One.js --network localhost",
+    "deploy:hard": "hardhat ignition deploy ignition/modules/One.js --network localhost --reset"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
     "@noir-lang/noir_codegen": "^0.34.0",
     "@noir-lang/noir_js": "0.31.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "hardhat": "^2.22.10"
+    "hardhat": "^2.22.10",
+    "zeronaut": "file:../../../zeronaut"
   }
 }
