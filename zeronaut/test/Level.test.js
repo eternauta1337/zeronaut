@@ -26,19 +26,19 @@ describe('Level', function () {
     });
 
     it('should display the level name', async () => {
-      const name = await zeronaut.getLevelName(level.target);
+      const name = await level.name();
 
       expect(name).to.equal(ethers.encodeBytes32String('Dummy Level'));
     });
 
     it('should display the level circuit', async () => {
-      const circuit = await zeronaut.getLevelCircuit(level.target);
+      const circuit = await level.circuit();
 
       expect(circuit).to.equal('{}');
     });
 
     it('should display the level instructions', async () => {
-      const instructions = await zeronaut.getLevelInstructions(level.target);
+      const instructions = await level.instructions();
 
       expect(instructions).to.equal('Dummy level instructions');
     });

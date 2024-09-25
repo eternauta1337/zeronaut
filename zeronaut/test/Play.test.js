@@ -21,14 +21,14 @@ describe('Play', () => {
   describe('when submitting a proof', () => {
     it('returns true with a correct proof', async () => {
       const proof = ethers.encodeBytes32String('dummy');
-      const result = await zeronaut.checkLevel(level.target, proof, []);
+      const result = await level.check(proof, []);
 
       expect(result).to.be.true;
     });
 
     it('returns false with an incorrect proof', async () => {
       const proof = ethers.encodeBytes32String('poop');
-      const result = await zeronaut.checkLevel(level.target, proof, []);
+      const result = await level.check(proof, []);
 
       expect(result).to.be.false;
     });
