@@ -5,4 +5,5 @@ interface ILevel {
     function name() external view returns (bytes32);
     function instructions() external view returns (string memory);
     function check(bytes calldata proof, bytes32[] calldata publicInputs) external view returns (bool);
+    function circuit() external view returns (string memory);
 }

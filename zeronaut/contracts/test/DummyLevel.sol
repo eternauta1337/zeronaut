@@ -15,4 +15,8 @@ contract DummyLevel is ILevel {
     function check(bytes calldata proof, bytes32[] calldata) external pure returns (bool) {
         return bytes32(proof) == bytes32("dummy");
     }
+
+    function circuit() external pure returns (string memory) {
+        return "{}";
+    }
 }

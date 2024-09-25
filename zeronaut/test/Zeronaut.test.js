@@ -55,16 +55,22 @@ describe('Zeronaut', function () {
           await zeronaut.createLevel(campaignId, level.target);
         });
 
+        it('should display the level', async () => {
+          const campaign = await zeronaut.getCampaign(campaignId);
+
+          expect(campaign.levels).to.contain(level.target);
+        });
+
         it('should display the level name', async () => {
           const name = await zeronaut.getLevelName(level.target);
 
           expect(name).to.equal(ethers.encodeBytes32String('Dummy Level'));
         });
 
-        it('should display the level', async () => {
-          const campaign = await zeronaut.getCampaign(campaignId);
+        it('should display the level circuit', async () => {
+          const circuit = await zeronaut.getLevelCircuit(level.target);
 
-          expect(campaign.levels).to.contain(level.target);
+          expect(circuit).to.equal('{}');
         });
 
         describe('when playing the level', () => {
