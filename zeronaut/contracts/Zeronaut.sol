@@ -7,27 +7,31 @@ contract Zeronaut {
     struct Campaign {
         bytes32 id;
         address owner;
-        address[] levels;
+    }
+
+    struct Level {
+        bytes32 id;
+        address addr;
+        bytes32 campaignId;
     }
 
     mapping(bytes32 => Campaign) public campaigns;
+    mapping(bytes32 => Level) public levels;
 
     modifier onlyCampaignOwner(bytes32 campaignId) {
         require(campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
         _;
     }
 
-    function createLevel(bytes32 campaignId, address addr) public onlyCampaignOwner(campaignId) {
+    function setLevel(bytes32 campaignId, bytes32 levelId, address addr) public onlyCampaignOwner(campaignId) {
         // Check if the campaign exists
         require(campaigns[campaignId].id != bytes32(0), "Campaign does not exist");
 
-        // Check if the level is not already in the campaign
-        Campaign storage campaign = campaigns[campaignId];
-        for (uint i = 0; i < campaign.levels.length; i++) {
-            require(campaign.levels[i] != addr, "Level already in campaign");
-        }
-
-        campaign.levels.push(addr);
+        // Store the level
+        Level storage newLevel = levels[levelId];
+        newLevel.id = levelId;
+        newLevel.addr = addr;
+        newLevel.campaignId = campaignId;
     }
 
     function createCampaign(bytes32 id) public {
@@ -41,6 +45,10 @@ contract Zeronaut {
 
     function getCampaign(bytes32 id) public view returns (Campaign memory) {
         return campaigns[id];
+    }
+
+    function getLevel(bytes32 id) public view returns (Level memory) {
+        return levels[id];
     }
 
     function getLevelName(address level) public view returns (bytes32) {
