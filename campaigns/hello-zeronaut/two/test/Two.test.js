@@ -5,7 +5,7 @@ const { buildProof } = require('zeronaut/utils/build-proof');
 
 let noirFrontend, noirBackend;
 
-describe('One', function () {
+describe('Two', function () {
   let level, verifier;
   let circuit;
 
@@ -24,11 +24,17 @@ describe('One', function () {
     it('should return true', async function () {
       // Retrieve or build a proof
       const proof = await buildProof(circuit, {
-        password: 'zeronaut',
+        key: '17',
+        lock_1: '187',
+        lock_2: '459',
       });
 
       // Submit the proof to the level contract
-      const result = await level.check(proof, []);
+      const publicInputs = [
+        ethers.zeroPadValue(ethers.toBeHex(187), 32),
+        ethers.zeroPadValue(ethers.toBeHex(459), 32),
+      ];
+      const result = await level.check(proof, publicInputs);
 
       expect(result).to.be.true;
     });
@@ -37,14 +43,19 @@ describe('One', function () {
   describe('submitting an invalid proof', function () {
     it('should revert with an invalid proof', async function () {
       const proof = await buildProof(circuit, {
-        password: 'zeronaut',
+        key: '17',
+        lock_1: '187',
+        lock_2: '459',
       });
       const invalidProof =
         proof.slice(0, -1) + (parseInt(proof.slice(-1), 16) ^ 1).toString(16);
-      await expect(level.check(invalidProof, [])).to.be.revertedWithCustomError(
-        verifier,
-        'POINT_NOT_ON_CURVE'
-      );
+      const publicInputs = [
+        ethers.zeroPadValue(ethers.toBeHex(187), 32),
+        ethers.zeroPadValue(ethers.toBeHex(459), 32),
+      ];
+      await expect(
+        level.check(invalidProof, publicInputs)
+      ).to.be.revertedWithCustomError(verifier, 'POINT_NOT_ON_CURVE');
     });
   });
 });
