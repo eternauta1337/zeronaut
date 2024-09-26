@@ -40,6 +40,26 @@ describe('Two', function () {
     });
   });
 
+  describe('submitting another valid proof', function () {
+    it('should return true', async function () {
+      // Retrieve or build a proof
+      const proof = await buildProof(circuit, {
+        key: '17',
+        lock_1: '374',
+        lock_2: '918',
+      });
+
+      // Submit the proof to the level contract
+      const publicInputs = [
+        ethers.zeroPadValue(ethers.toBeHex(374), 32),
+        ethers.zeroPadValue(ethers.toBeHex(918), 32),
+      ];
+      const result = await level.check(proof, publicInputs);
+
+      expect(result).to.be.true;
+    });
+  });
+
   describe('submitting an invalid proof', function () {
     it('should revert with an invalid proof', async function () {
       const proof = await buildProof(circuit, {
