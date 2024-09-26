@@ -18,6 +18,8 @@ contract Zeronaut {
 
     mapping(bytes32 => Campaign) public campaigns;
     mapping(bytes32 => Level) public levels;
+    // levelId -> playerAddress -> levelSolved
+    mapping(bytes32 => mapping(address => bool)) public solvers;
 
     modifier onlyCampaignOwner(bytes32 campaignId) {
         require(campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
@@ -51,6 +53,17 @@ contract Zeronaut {
         }
     }
 
+    function solveLevel(bytes32 levelId, bytes calldata proof, bytes32[] calldata publicInputs) public {
+        Level storage level = levels[levelId];
+        require(level.addr != address(0), "Level does not exist");
+        require(!solvers[levelId][msg.sender], "Level already solved");
+
+        bool isSolved = ILevel(level.addr).check(proof, publicInputs);
+        require(isSolved, "Level not solved");
+
+        solvers[levelId][msg.sender] = true;
+    }
+
     function createCampaign(bytes32 id) public {
         // TODO: check if id is already taken
         require(campaigns[id].owner == address(0), "Campaign id already taken");
@@ -66,5 +79,9 @@ contract Zeronaut {
 
     function getLevel(bytes32 id) public view returns (Level memory) {
         return levels[id];
+    }
+
+    function isLevelSolved(bytes32 levelId, address player) public view returns (bool) {
+        return solvers[levelId][player];
     }
 }
