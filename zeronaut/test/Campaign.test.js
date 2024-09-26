@@ -20,10 +20,24 @@ describe('Campaign', function () {
       await createCampaign(zeronaut, campaignId);
     });
 
-    it('should display the campaign with the appropriate owner', async () => {
-      const campaign = await zeronaut.getCampaign(campaignId);
+    describe('when the campaign is queried', () => {
+      let campaign;
 
-      expect(campaign.owner).to.equal(owner.address);
+      before('query campaign', async () => {
+        campaign = await zeronaut.getCampaign(campaignId);
+      });
+
+      it('should display the campaign owner', async () => {
+        expect(campaign.owner).to.equal(owner.address);
+      });
+
+      it('should display the campaign id', async () => {
+        expect(campaign.id).to.equal(campaignId);
+      });
+
+      it('should display the campaign levels (empty)', async () => {
+        expect(campaign.levels).to.have.length(0);
+      });
     });
 
     describe('when a campaign with the same id is created', () => {

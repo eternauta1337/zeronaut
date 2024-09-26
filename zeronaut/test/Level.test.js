@@ -54,6 +54,31 @@ describe('Level', function () {
         expect(levelData.addr).to.equal(level.target);
       });
     });
+
+    describe('when more levels are created', () => {
+      const levelId2 = ethers.encodeBytes32String('dummy-level-2');
+      const levelId3 = ethers.encodeBytes32String('dummy-level-3');
+
+      before('create more levels', async () => {
+        await createLevel(zeronaut, campaignId, levelId2);
+        await createLevel(zeronaut, campaignId, levelId3);
+      });
+
+      describe('when querying the campaign', () => {
+        let campaign;
+
+        before('query campaign', async () => {
+          campaign = await zeronaut.getCampaign(campaignId);
+        });
+
+        it('should display all levels', async () => {
+          expect(campaign.levels).to.have.length(3);
+          expect(campaign.levels).to.include(levelId);
+          expect(campaign.levels).to.include(levelId2);
+          expect(campaign.levels).to.include(levelId3);
+        });
+      });
+    });
   });
 });
 

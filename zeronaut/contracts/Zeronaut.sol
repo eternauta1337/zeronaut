@@ -7,6 +7,7 @@ contract Zeronaut {
     struct Campaign {
         bytes32 id;
         address owner;
+        bytes32[] levels;
     }
 
     struct Level {
@@ -24,14 +25,30 @@ contract Zeronaut {
     }
 
     function setLevel(bytes32 campaignId, bytes32 levelId, address addr) public onlyCampaignOwner(campaignId) {
+        Campaign storage campaign = campaigns[campaignId];
+
         // Check if the campaign exists
-        require(campaigns[campaignId].id != bytes32(0), "Campaign does not exist");
+        require(campaign.id != bytes32(0), "Campaign does not exist");
 
         // Store the level
         Level storage newLevel = levels[levelId];
         newLevel.id = levelId;
         newLevel.addr = addr;
         newLevel.campaignId = campaignId;
+
+        // Check if the level ID already exists in the campaign
+        bool levelExists = false;
+        for (uint i = 0; i < campaign.levels.length; i++) {
+            if (campaign.levels[i] == levelId) {
+                levelExists = true;
+                break;
+            }
+        }
+
+        // Add the level to the campaign only if it doesn't already exist
+        if (!levelExists) {
+            campaign.levels.push(levelId);
+        }
     }
 
     function createCampaign(bytes32 id) public {
