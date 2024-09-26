@@ -14,7 +14,7 @@ contract Two is ILevel {
     }
 
     function instructions() public pure returns (string memory) {
-        return "If you played Ethernaut, you should know the password.";
+        return "You need to pass a number that is not 1, and is divisible by two other numbers, in this case 187 and 459";
     }
 
     function check(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
