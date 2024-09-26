@@ -4,10 +4,6 @@ pragma solidity ^0.8.27;
 import "../interfaces/ILevel.sol";
 
 contract DummyLevel is ILevel {
-    function name() external pure returns (bytes32) {
-        return "Dummy Level";
-    }
-
     function instructions() external pure returns (string memory) {
         return "Dummy level instructions";
     }

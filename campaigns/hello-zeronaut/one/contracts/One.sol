@@ -13,10 +13,6 @@ contract One is ILevel {
         verifier = UltraVerifier(_verifier);
     }
 
-    function name() public pure returns (bytes32) {
-        return "One";
-    }
-
     function instructions() public pure returns (string memory) {
         return "If you played Ethernaut, you should know the password.";
     }

@@ -25,12 +25,6 @@ describe('Level', function () {
       expect(levelData.addr).to.equal(level.target);
     });
 
-    it('should display the level name', async () => {
-      const name = await level.name();
-
-      expect(name).to.equal(ethers.encodeBytes32String('Dummy Level'));
-    });
-
     it('should display the level circuit', async () => {
       const circuit = await level.circuit();
 
