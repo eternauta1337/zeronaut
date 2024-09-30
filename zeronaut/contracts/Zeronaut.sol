@@ -58,6 +58,8 @@ contract Zeronaut {
         require(level.addr != address(0), "Level does not exist");
         require(!solvers[levelId][msg.sender], "Level already solved");
 
+
+
         bool isSolved = ILevel(level.addr).check(proof, publicInputs);
         require(isSolved, "Level not solved");
 

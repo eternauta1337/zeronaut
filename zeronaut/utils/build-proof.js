@@ -28,15 +28,16 @@ async function buildProof(circuit, inputs) {
 
 async function buildSignature(signer) {
   const msg = 'This is my proof';
-  const signature = await signer.signMessage(msg);
+  // Remove last byte for raw ECDSA secp256k1 sig
+  const signature = (await signer.signMessage(msg)).slice(0, -2);
   const hashedMsg = ethers.id(msg);
   const pubKeyRaw = ethers.SigningKey.recoverPublicKey(hashedMsg, signature);
   const pubKey = pubKeyRaw.slice(4);
-  const pubKeyX = pubKey.substring(0, 64);
-  const pubKeyY = pubKey.substring(64);
+  const pubKeyX = '0x' + pubKey.substring(0, 64);
+  const pubKeyY = '0x' + pubKey.substring(64);
 
   return {
-    signature: _hexToBytes32Array(signature.slice(0, -2)), // Remove last byte for raw ECDSA secp256k1 sig
+    signature: _hexToBytes32Array(signature),
     pubKeyX: _hexToBytes32Array(pubKeyX),
     pubKeyY: _hexToBytes32Array(pubKeyY),
     hashedMsg: _hexToBytes32Array(hashedMsg),

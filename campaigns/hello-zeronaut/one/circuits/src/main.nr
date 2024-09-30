@@ -4,8 +4,8 @@ use std::ecdsa_secp256k1;
 fn main(
     password: str<8>,
     signature: [u8; 64],
-    pubKeyX: [u8; 32],
-    pubKeyY: [u8; 32],
+    pubKeyX: pub [u8; 32],
+    pubKeyY: pub [u8; 32],
     hashedMsg: [u8; 32]
 ) {
     assert(ecdsa_secp256k1::verify_signature(pubKeyX, pubKeyY, signature, hashedMsg));

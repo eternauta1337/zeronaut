@@ -40,8 +40,11 @@ describe('One', function () {
         hashedMsg,
       });
 
+      // Construct public inputs
+      const publicInputs = [...pubKeyX, ...pubKeyY];
+
       // Submit the proof to the level contract
-      const result = await level.check(proof, []);
+      const result = await level.check(proof, publicInputs);
 
       expect(result).to.be.true;
     });
