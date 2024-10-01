@@ -27,20 +27,38 @@ async function buildProof(circuit, inputs) {
 }
 
 async function buildSignature(signer) {
+  // Generate a signature of any message
   const msg = 'This is my proof';
-  // Remove last byte for raw ECDSA secp256k1 sig
-  const signature = (await signer.signMessage(msg)).slice(0, -2);
-  const hashedMsg = ethers.id(msg);
-  const pubKeyRaw = ethers.SigningKey.recoverPublicKey(hashedMsg, signature);
+  const signature = await signer.signMessage(msg);
+
+  // Sanity check: compare the recovered address to the signer's address
+  // const recoveredAddress = ethers.recoverAddress(digest, signature);
+  const recoveredAddress = ethers.verifyMessage(msg, signature);
+  if (recoveredAddress !== signer.address) {
+    throw new Error('Signature does not match signer');
+  }
+
+  // Extract the public key from the signature
+  // TODO: This is the problem here; this signature is incompatible with the recoverPublicKey function
+  const digest = ethers.hashMessage(msg);
+  const pubKeyRaw = ethers.SigningKey.recoverPublicKey(digest, signature);
   const pubKey = pubKeyRaw.slice(4);
   const pubKeyX = '0x' + pubKey.substring(0, 64);
   const pubKeyY = '0x' + pubKey.substring(64);
 
+  // Sanity check: reconstruct the address from the public key and compare it to the signer's address
+  const pubKeyCombined = '0x' + pubKeyX.slice(2) + pubKeyY.slice(2);
+  const pubKeyHash = ethers.keccak256(pubKeyCombined);
+  const computedAddress = ethers.getAddress('0x' + pubKeyHash.slice(26));
+  if (computedAddress !== signer.address) {
+    throw new Error('Signature does not match signer');
+  }
+
   return {
-    signature: _hexToBytes32Array(signature),
+    signature: _hexToBytes32Array(signature).slice(0, -1), // Remove last byte
     pubKeyX: _hexToBytes32Array(pubKeyX),
     pubKeyY: _hexToBytes32Array(pubKeyY),
-    hashedMsg: _hexToBytes32Array(hashedMsg),
+    hashedMsg: _hexToBytes32Array(digest),
   };
 }
 

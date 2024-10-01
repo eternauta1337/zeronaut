@@ -5,6 +5,7 @@ import "hardhat/console.sol";
 
 import "./Verifier.sol";
 import {ILevel} from "zeronaut/contracts/interfaces/ILevel.sol";
+import {Zeronaut} from "zeronaut/contracts/Zeronaut.sol";
 
 contract One is ILevel {
     UltraVerifier verifier;
@@ -18,8 +19,6 @@ contract One is ILevel {
     }
 
     function check(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {
-        // TODO: require address in public inputs is msg.sender
-
         return verifier.verify(proof, publicInputs);
     }
 
