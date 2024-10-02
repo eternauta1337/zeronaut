@@ -5,8 +5,6 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "generate:verifier": "bash circuits/scripts/generate-contract.sh",
-    "generate:acir": "bash circuits/scripts/generate-acir.sh",
     "deploy": "hardhat ignition deploy ignition/modules/One.js --network localhost",
     "deploy:hard": "hardhat ignition deploy ignition/modules/One.js --network localhost --reset"
   },

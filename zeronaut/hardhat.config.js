@@ -1,6 +1,7 @@
 require('@nomicfoundation/hardhat-toolbox');
 
-/** @type import('hardhat/config').HardhatUserConfig */
+require('./index');
+
 module.exports = {
   solidity: {
     version: '0.8.27',
