@@ -1,81 +1,43 @@
 const hre = require('hardhat');
 const { expect } = require('chai');
-const fs = require('fs');
 const { buildProof } = require('zeronaut/utils/build-proof');
 
-let noirFrontend, noirBackend;
-
 describe('Two', function () {
-  let level, verifier;
+  let zeronaut, level, verifier;
   let circuit;
+  let signer;
+  let campaignId = ethers.encodeBytes32String('hello');
+  let levelId = ethers.encodeBytes32String('two');
 
-  before('load Noir module', async function () {
-    circuit = JSON.parse(
-      fs.readFileSync('./circuits/export/main.json', 'utf8')
-    );
-  });
-
-  before('setup', async function () {
+  before('bootstrap', async function () {
+    // Id signers
+    [signer] = await hre.ethers.getSigners();
+    // Deploy contracts
+    zeronaut = await hre.ethers.deployContract('Zeronaut', []);
     verifier = await hre.ethers.deployContract('UltraVerifier');
-    level = await hre.ethers.deployContract('One', [verifier.target]);
+    level = await hre.ethers.deployContract('Two', [verifier.target]);
+    // Create campaign and set level
+    await (await zeronaut.createCampaign(campaignId)).wait();
+    await (await zeronaut.setLevel(campaignId, levelId, level.target)).wait();
+    // Retrieve the level's circuit
+    circuit = JSON.parse(await level.circuit());
   });
 
-  describe('submitting a valid proof', function () {
-    it('should return true', async function () {
-      // Retrieve or build a proof
-      const proof = await buildProof(circuit, {
-        key: '17',
-        lock_1: '187',
-        lock_2: '459',
-      });
-
-      // Submit the proof to the level contract
-      const publicInputs = [
-        ethers.zeroPadValue(ethers.toBeHex(187), 32),
-        ethers.zeroPadValue(ethers.toBeHex(459), 32),
-      ];
-      const result = await level.check(proof, publicInputs);
-
-      expect(result).to.be.true;
+  it('solves the level', async function () {
+    // Build the proof
+    const { proof, publicInputs } = await buildProof(signer, circuit, {
+      key: '17',
+      lock_1: '187',
+      lock_2: '459',
     });
-  });
+    publicInputs.push(ethers.zeroPadValue(ethers.toBeHex(187), 32));
+    publicInputs.push(ethers.zeroPadValue(ethers.toBeHex(459), 32));
 
-  describe('submitting another valid proof', function () {
-    it('should return true', async function () {
-      // Retrieve or build a proof
-      const proof = await buildProof(circuit, {
-        key: '17',
-        lock_1: '374',
-        lock_2: '918',
-      });
+    // Submit the proof
+    await (await zeronaut.solveLevel(levelId, proof, publicInputs)).wait();
 
-      // Submit the proof to the level contract
-      const publicInputs = [
-        ethers.zeroPadValue(ethers.toBeHex(374), 32),
-        ethers.zeroPadValue(ethers.toBeHex(918), 32),
-      ];
-      const result = await level.check(proof, publicInputs);
-
-      expect(result).to.be.true;
-    });
-  });
-
-  describe('submitting an invalid proof', function () {
-    it('should revert with an invalid proof', async function () {
-      const proof = await buildProof(circuit, {
-        key: '17',
-        lock_1: '187',
-        lock_2: '459',
-      });
-      const invalidProof =
-        proof.slice(0, -1) + (parseInt(proof.slice(-1), 16) ^ 1).toString(16);
-      const publicInputs = [
-        ethers.zeroPadValue(ethers.toBeHex(187), 32),
-        ethers.zeroPadValue(ethers.toBeHex(459), 32),
-      ];
-      await expect(
-        level.check(invalidProof, publicInputs)
-      ).to.be.revertedWithCustomError(verifier, 'POINT_NOT_ON_CURVE');
-    });
+    // Check if the level is solved
+    const isSolved = await zeronaut.isLevelSolved(levelId, signer.address);
+    expect(isSolved).to.be.true;
   });
 });

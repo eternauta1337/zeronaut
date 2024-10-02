@@ -1,4 +1,5 @@
 require('@nomicfoundation/hardhat-toolbox');
+require('zeronaut');
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {

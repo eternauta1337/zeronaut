@@ -75,7 +75,7 @@ contract Zeronaut {
     }
 
     function _computeAddressFromPublicKey(bytes32[] calldata publicInputs) internal pure returns (address) {
-        require(publicInputs.length == 64, "Invalid public inputs length");
+        require(publicInputs.length >= 64, "Invalid public inputs length");
 
         // Incoming publicInputs is an array of 64 bytes32 words.
         // Each word contains a chunk of the public key.
