@@ -13,6 +13,7 @@ describe('Level', function () {
 
   describe('when a level is created', () => {
     let level;
+
     const levelId = ethers.encodeBytes32String('dummy-level');
 
     before('deploy and register level', async () => {
@@ -28,7 +29,7 @@ describe('Level', function () {
     it('should display the level circuit', async () => {
       const circuit = await level.circuit();
 
-      expect(circuit).to.equal('{}');
+      expect(circuit).to.include('abi');
     });
 
     it('should display the level instructions', async () => {
@@ -77,9 +78,13 @@ describe('Level', function () {
 });
 
 async function createLevel(zeronaut, campaignId, levelId) {
+  // Deploy the verifier contract
+  const Verifier = await ethers.getContractFactory('UltraVerifier');
+  const verifier = await Verifier.deploy();
+
   // Deploy the level contract
-  const factory = await ethers.getContractFactory('DummyLevel');
-  const level = await factory.deploy();
+  const Level = await ethers.getContractFactory('DummyLevel');
+  const level = await Level.deploy(verifier.target);
 
   // Set the level in the zeronaut contract
   const levelAddress = level.target;

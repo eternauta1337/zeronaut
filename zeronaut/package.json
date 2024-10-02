@@ -4,6 +4,8 @@
   "description": "Contracts for Zeronaut",
   "scripts": {
     "test": "hardhat test",
+    "generate:contract": "bash scripts/generate-contract.sh",
+    "generate:acir": "bash scripts/generate-acir.sh",
     "deploy": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost",
     "deploy:hard": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost --reset"
   },

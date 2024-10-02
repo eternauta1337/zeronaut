@@ -1,6 +1,16 @@
 const { ethers } = require('ethers');
 
-async function buildProof(circuit, inputs) {
+async function buildProof(signer, circuit, inputs) {
+  // Build the signature, and inject it into the inputs
+  const { signature, pubKeyX, pubKeyY, hashedMsg } = await _buildSignature(
+    signer
+  );
+  inputs.signature = signature;
+  inputs.pubKeyX = pubKeyX;
+  inputs.pubKeyY = pubKeyY;
+  inputs.hashedMsg = hashedMsg;
+
+  // Initialize Noir
   const { Noir } = await import('@noir-lang/noir_js');
   const { BarretenbergBackend } = await import(
     '@noir-lang/backend_barretenberg'
@@ -21,12 +31,18 @@ async function buildProof(circuit, inputs) {
   if (!verification) {
     throw new Error('Proof verification failed');
   }
-  // console.log('Verification:', verification)
 
-  return '0x' + Buffer.from(proofData.proof).toString('hex');
+  // Construct the public inputs
+  const publicInputs = [...pubKeyX, ...pubKeyY];
+
+  // Return the proof and public inputs
+  return {
+    proof: '0x' + Buffer.from(proofData.proof).toString('hex'),
+    publicInputs,
+  };
 }
 
-async function buildSignature(signer) {
+async function _buildSignature(signer) {
   // Generate a signature of any message
   const msg = 'This is my proof';
   const signature = await signer.signMessage(msg);
@@ -79,5 +95,4 @@ function _hexToBytes32Array(value) {
 
 module.exports = {
   buildProof,
-  buildSignature,
 };

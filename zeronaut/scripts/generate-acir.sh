@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Compile the circuit
+cd circuits
+nargo compile
+cd ..
+
 # Read the circuits.json file
 input_file="./circuits/target/circuits.json"
 output_file="./circuits/target/circuits.txt"
