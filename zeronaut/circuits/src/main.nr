@@ -1,6 +1,5 @@
 use std::ecdsa_secp256k1;
 
-#[export]
 fn main(
     secret: Field,
     signature: [u8; 64],
