@@ -1,7 +1,7 @@
 const { useFixture } = require('./helpers/fixture');
 const { deployZeronaut } = require('./helpers/zeronaut');
 
-describe.only('Upgrades', function () {
+describe('Upgrades', function () {
   useFixture('upgrades');
 
   let zeronaut;
@@ -13,7 +13,7 @@ describe.only('Upgrades', function () {
   describe('when trying to upgrade to the zero address', function () {
     it('should fail', async function () {
       await expect(
-        zeronaut.upgradeTo('0x0000000000000000000000000000000000000000')
+        zeronaut.upgradeTo(hre.ethers.ZeroAddress)
       ).to.be.revertedWith('UUPSImplementation: Zero address');
     });
   });

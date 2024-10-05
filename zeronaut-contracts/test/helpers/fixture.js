@@ -1,4 +1,5 @@
 const path = require('path');
+const { resetHardhatContext } = require('hardhat/plugins-testing');
 
 function useFixture(fixtureName) {
   let currentPath;
@@ -25,6 +26,7 @@ function useFixture(fixtureName) {
 
   after(function () {
     process.chdir(currentPath);
+    resetHardhatContext();
   });
 }
 
