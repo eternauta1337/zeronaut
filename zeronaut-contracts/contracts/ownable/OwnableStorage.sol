@@ -1,8 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity >=0.8.11 <0.9.0;
 
-import "../errors/AccessError.sol";
-
 library OwnableStorage {
     bytes32 private constant _SLOT_OWNABLE_STORAGE =
         keccak256(abi.encode("io.zeronaut.ownable"));
@@ -21,7 +19,7 @@ library OwnableStorage {
 
     function onlyOwner() internal view {
         if (msg.sender != getOwner()) {
-            revert AccessError.Unauthorized(msg.sender);
+            revert("OwnableStorage: Caller is not the owner");
         }
     }
 

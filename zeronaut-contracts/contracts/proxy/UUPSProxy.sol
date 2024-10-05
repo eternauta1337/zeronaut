@@ -3,21 +3,20 @@ pragma solidity >=0.8.11 <0.9.0;
 
 import "./ProxyStorage.sol";
 import "../utils/AddressUtil.sol";
-import "../errors/AddressError.sol";
 import {OwnableStorage} from "../ownable/OwnableStorage.sol";
 
 contract UUPSProxy is ProxyStorage {
     constructor(address firstImplementation, address initialOwner) {
         if (initialOwner == address(0)) {
-            revert AddressError.ZeroAddress();
+            revert("UUPSProxy: Owner is zero");
         }
 
         if (firstImplementation == address(0)) {
-            revert AddressError.ZeroAddress();
+            revert("UUPSProxy: Implementation is zero");
         }
 
         if (!AddressUtil.isContract(firstImplementation)) {
-            revert AddressError.NotAContract(firstImplementation);
+            revert("UUPSProxy: Implementation not a contract");
         }
 
         OwnableStorage.load().owner = initialOwner;
