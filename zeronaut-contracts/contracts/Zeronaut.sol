@@ -2,39 +2,24 @@
 pragma solidity ^0.8.27;
 
 import "./interfaces/ILevel.sol";
+import "./ZeronautStorage.sol";
 import "hardhat/console.sol";
 
-contract Zeronaut {
-    struct Campaign {
-        bytes32 id;
-        address owner;
-        bytes32[] levels;
-    }
-
-    struct Level {
-        bytes32 id;
-        address addr;
-        bytes32 campaignId;
-    }
-
-    mapping(bytes32 => Campaign) public campaigns;
-    mapping(bytes32 => Level) public levels;
-    // levelId -> playerAddress -> levelSolved
-    mapping(bytes32 => mapping(address => bool)) public solvers;
-
+contract Zeronaut is ZeronautStorage {
     modifier onlyCampaignOwner(bytes32 campaignId) {
-        require(campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
+        require(_store().campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
         _;
     }
 
     function setLevel(bytes32 campaignId, bytes32 levelId, address addr) public onlyCampaignOwner(campaignId) {
-        Campaign storage campaign = campaigns[campaignId];
+        Data storage store = _store();
+        Campaign storage campaign = store.campaigns[campaignId];
 
         // Check if the campaign exists
         require(campaign.id != bytes32(0), "Campaign does not exist");
 
         // Store the level
-        Level storage newLevel = levels[levelId];
+        Level storage newLevel = store.levels[levelId];
         newLevel.id = levelId;
         newLevel.addr = addr;
         newLevel.campaignId = campaignId;
@@ -55,12 +40,14 @@ contract Zeronaut {
     }
 
     function solveLevel(bytes32 levelId, bytes calldata proof, bytes32[] calldata publicInputs) public {
+        Data storage store = _store();
+
         // Check if the level exists
-        Level storage level = levels[levelId];
+        Level storage level = store.levels[levelId];
         require(level.addr != address(0), "Level does not exist");
 
         // Check if the level has already been solved
-        require(!solvers[levelId][msg.sender], "Level already solved");
+        require(!store.solvers[levelId][msg.sender], "Level already solved");
 
         // Ensure that the public key corresponds to the player's address
         address computedAddress = _computeAddressFromPublicKey(publicInputs);
@@ -71,7 +58,7 @@ contract Zeronaut {
         require(isSolved, "Level not solved");
 
         // Mark the level as solved
-        solvers[levelId][msg.sender] = true;
+        store.solvers[levelId][msg.sender] = true;
     }
 
     function _computeAddressFromPublicKey(bytes32[] calldata publicInputs) internal pure returns (address) {
@@ -110,23 +97,25 @@ contract Zeronaut {
     }
 
     function createCampaign(bytes32 id) public {
-        // TODO: check if id is already taken
-        require(campaigns[id].owner == address(0), "Campaign id already taken");
+        Data storage store = _store();
 
-        Campaign storage newCampaign = campaigns[id];
+        // TODO: check if id is already taken
+        require(store.campaigns[id].owner == address(0), "Campaign id already taken");
+
+        Campaign storage newCampaign = store.campaigns[id];
         newCampaign.id = id;
         newCampaign.owner = msg.sender;
     }
 
     function getCampaign(bytes32 id) public view returns (Campaign memory) {
-        return campaigns[id];
+        return _store().campaigns[id];
     }
 
     function getLevel(bytes32 id) public view returns (Level memory) {
-        return levels[id];
+        return _store().levels[id];
     }
 
     function isLevelSolved(bytes32 levelId, address player) public view returns (bool) {
-        return solvers[levelId][player];
+        return _store().solvers[levelId][player];
     }
 }
