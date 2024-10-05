@@ -1,24 +1,26 @@
-// const { expect } = require('chai');
+const { useFixture } = require('./helpers/fixture');
 
-// describe('Zeronaut', function () {
-//   describe('when the main contract is deployed', () => {
-//     let zeronaut;
+describe('Zeronaut', function () {
+  useFixture('basic-level');
 
-//     before('deploy main contract', async () => {
-//       zeronaut = await deployZeronaut();
-//     });
+  describe('when the main contract is deployed', () => {
+    let zeronaut;
 
-//     it('should have deployed the contract', async () => {
-//       expect(zeronaut.target).to.not.be.null;
-//     });
-//   });
-// });
+    before('deploy main contract', async function () {
+      zeronaut = await deployZeronaut(hre);
+    });
 
-// async function deployZeronaut() {
-//   const factory = await ethers.getContractFactory('Zeronaut');
-//   return await factory.deploy();
-// }
+    it('should have deployed the contract', async function () {
+      expect(zeronaut.target).to.not.be.null;
+    });
+  });
+});
 
-// module.exports = {
-//   deployZeronaut,
-// };
+async function deployZeronaut(hre) {
+  const factory = await hre.ethers.getContractFactory('Zeronaut');
+  return await factory.deploy();
+}
+
+module.exports = {
+  deployZeronaut,
+};

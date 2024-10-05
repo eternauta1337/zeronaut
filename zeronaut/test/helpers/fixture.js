@@ -4,7 +4,7 @@ function useFixture(fixtureName) {
   let currentPath;
   let fixturePath;
 
-  before(() => {
+  before(function () {
     currentPath = process.cwd();
 
     fixturePath = path.join(
@@ -18,9 +18,12 @@ function useFixture(fixtureName) {
     }
 
     global.hre = require('hardhat');
+
+    require('@nomicfoundation/hardhat-chai-matchers');
+    global.expect = require('chai').expect;
   });
 
-  after(() => {
+  after(function () {
     process.chdir(currentPath);
   });
 }

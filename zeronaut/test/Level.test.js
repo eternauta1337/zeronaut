@@ -1,98 +1,104 @@
-// const { expect } = require('chai');
-// const { deployZeronaut } = require('./Zeronaut.test');
-// const { createCampaign } = require('./Campaign.test');
+const { deployZeronaut } = require('./Zeronaut.test');
+const { createCampaign } = require('./Campaign.test');
+const { useFixture } = require('./helpers/fixture');
 
-// describe('Level', function () {
-//   let zeronaut;
-//   const campaignId = ethers.encodeBytes32String('dummy-campaign');
+describe('Level', function () {
+  useFixture('basic-level');
 
-//   before('bootstrap', async () => {
-//     zeronaut = await deployZeronaut();
-//     await createCampaign(zeronaut, campaignId);
-//   });
+  let zeronaut;
+  let campaignId;
 
-//   describe('when a level is created', () => {
-//     let level;
+  before('bootstrap', async function () {
+    zeronaut = await deployZeronaut(hre);
+    campaignId = hre.ethers.encodeBytes32String('dummy-campaign');
+    await createCampaign(zeronaut, campaignId);
+  });
 
-//     const levelId = ethers.encodeBytes32String('dummy-level');
+  describe('when a level is created', function () {
+    let level;
 
-//     before('deploy and register level', async () => {
-//       level = await createLevel(zeronaut, campaignId, levelId);
-//     });
+    let levelId;
 
-//     it('should display the level address', async () => {
-//       const levelData = await zeronaut.getLevel(levelId);
+    before('deploy and register level', async function () {
+      levelId = hre.ethers.encodeBytes32String('dummy-level');
+      level = await createLevel(hre, zeronaut, campaignId, levelId);
+    });
 
-//       expect(levelData.addr).to.equal(level.target);
-//     });
+    it('should display the level address', async function () {
+      const levelData = await zeronaut.getLevel(levelId);
 
-//     it('should display the level circuit', async () => {
-//       const circuit = await level.circuit();
+      expect(levelData.addr).to.equal(level.target);
+    });
 
-//       expect(circuit).to.include('abi');
-//     });
+    it('should display the level circuit', async function () {
+      const circuit = await level.circuit();
 
-//     it('should display the level instructions', async () => {
-//       const instructions = await level.instructions();
+      expect(circuit).to.include('abi');
+    });
 
-//       expect(instructions).to.equal('Dummy level instructions');
-//     });
+    it('should display the level instructions', async function () {
+      const instructions = await level.instructions();
 
-//     describe('when a level is updated', () => {
-//       before('set level', async () => {
-//         level = await createLevel(zeronaut, campaignId, levelId);
-//       });
+      expect(instructions).to.equal('Dummy level instructions');
+    });
 
-//       it('should display the new level address', async () => {
-//         const levelData = await zeronaut.getLevel(levelId);
+    describe('when a level is updated', () => {
+      before('set level', async function () {
+        level = await createLevel(hre, zeronaut, campaignId, levelId);
+      });
 
-//         expect(levelData.addr).to.equal(level.target);
-//       });
-//     });
+      it('should display the new level address', async function () {
+        const levelData = await zeronaut.getLevel(levelId);
 
-//     describe('when more levels are created', () => {
-//       const levelId2 = ethers.encodeBytes32String('dummy-level-2');
-//       const levelId3 = ethers.encodeBytes32String('dummy-level-3');
+        expect(levelData.addr).to.equal(level.target);
+      });
+    });
 
-//       before('create more levels', async () => {
-//         await createLevel(zeronaut, campaignId, levelId2);
-//         await createLevel(zeronaut, campaignId, levelId3);
-//       });
+    describe('when more levels are created', function () {
+      let levelId2;
+      let levelId3;
 
-//       describe('when querying the campaign', () => {
-//         let campaign;
+      before('create more levels', async function () {
+        levelId2 = hre.ethers.encodeBytes32String('dummy-level-2');
+        levelId3 = hre.ethers.encodeBytes32String('dummy-level-3');
+        await createLevel(hre, zeronaut, campaignId, levelId2);
+        await createLevel(hre, zeronaut, campaignId, levelId3);
+      });
 
-//         before('query campaign', async () => {
-//           campaign = await zeronaut.getCampaign(campaignId);
-//         });
+      describe('when querying the campaign', function () {
+        let campaign;
 
-//         it('should display all levels', async () => {
-//           expect(campaign.levels).to.have.length(3);
-//           expect(campaign.levels).to.include(levelId);
-//           expect(campaign.levels).to.include(levelId2);
-//           expect(campaign.levels).to.include(levelId3);
-//         });
-//       });
-//     });
-//   });
-// });
+        before('query campaign', async function () {
+          campaign = await zeronaut.getCampaign(campaignId);
+        });
 
-// async function createLevel(zeronaut, campaignId, levelId) {
-//   // Deploy the verifier contract
-//   const Verifier = await ethers.getContractFactory('UltraVerifier');
-//   const verifier = await Verifier.deploy();
+        it('should display all levels', async function () {
+          expect(campaign.levels).to.have.length(3);
+          expect(campaign.levels).to.include(levelId);
+          expect(campaign.levels).to.include(levelId2);
+          expect(campaign.levels).to.include(levelId3);
+        });
+      });
+    });
+  });
+});
 
-//   // Deploy the level contract
-//   const Level = await ethers.getContractFactory('DummyLevel');
-//   const level = await Level.deploy(verifier.target);
+async function createLevel(hre, zeronaut, campaignId, levelId) {
+  // Deploy the verifier contract
+  const Verifier = await hre.ethers.getContractFactory('UltraVerifier');
+  const verifier = await Verifier.deploy();
 
-//   // Set the level in the zeronaut contract
-//   const levelAddress = level.target;
-//   await zeronaut.setLevel(campaignId, levelId, levelAddress);
+  // Deploy the level contract
+  const Level = await hre.ethers.getContractFactory('DummyLevel');
+  const level = await Level.deploy(verifier.target);
 
-//   return level;
-// }
+  // Set the level in the zeronaut contract
+  const levelAddress = level.target;
+  await zeronaut.setLevel(campaignId, levelId, levelAddress);
 
-// module.exports = {
-//   createLevel,
-// };
+  return level;
+}
+
+module.exports = {
+  createLevel,
+};

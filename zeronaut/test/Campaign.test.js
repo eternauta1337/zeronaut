@@ -1,73 +1,76 @@
-// const { expect } = require('chai');
-// const { deployZeronaut } = require('./Zeronaut.test');
+const { deployZeronaut } = require('./Zeronaut.test');
+const { useFixture } = require('./helpers/fixture');
 
-// describe('Campaign', function () {
-//   let zeronaut;
+describe('Campaign', function () {
+  useFixture('basic-level');
 
-//   before('deploy main contract', async () => {
-//     zeronaut = await deployZeronaut();
-//   });
+  let zeronaut;
 
-//   describe('when a campaign is created', () => {
-//     const campaignId = ethers.encodeBytes32String('dummy-campaign');
-//     let owner, notOwner;
+  before('deploy main contract', async function () {
+    zeronaut = await deployZeronaut(hre);
+  });
 
-//     before('identify signers', async () => {
-//       [owner, notOwner] = await ethers.getSigners();
-//     });
+  describe('when a campaign is created', function () {
+    let campaignId;
+    let owner, notOwner;
 
-//     before('create campaign', async () => {
-//       await createCampaign(zeronaut, campaignId);
-//     });
+    before('identify signers', async function () {
+      campaignId = hre.ethers.encodeBytes32String('dummy-campaign');
+      [owner, notOwner] = await hre.ethers.getSigners();
+    });
 
-//     describe('when the campaign is queried', () => {
-//       let campaign;
+    before('create campaign', async function () {
+      await createCampaign(zeronaut, campaignId);
+    });
 
-//       before('query campaign', async () => {
-//         campaign = await zeronaut.getCampaign(campaignId);
-//       });
+    describe('when the campaign is queried', function () {
+      let campaign;
 
-//       it('should display the campaign owner', async () => {
-//         expect(campaign.owner).to.equal(owner.address);
-//       });
+      before('query campaign', async function () {
+        campaign = await zeronaut.getCampaign(campaignId);
+      });
 
-//       it('should display the campaign id', async () => {
-//         expect(campaign.id).to.equal(campaignId);
-//       });
+      it('should display the campaign owner', async function () {
+        expect(campaign.owner).to.equal(owner.address);
+      });
 
-//       it('should display the campaign levels (empty)', async () => {
-//         expect(campaign.levels).to.have.length(0);
-//       });
-//     });
+      it('should display the campaign id', async function () {
+        expect(campaign.id).to.equal(campaignId);
+      });
 
-//     describe('when a campaign with the same id is created', () => {
-//       it('reverts', async () => {
-//         await expect(zeronaut.createCampaign(campaignId)).to.be.revertedWith(
-//           'Campaign id already taken'
-//         );
-//       });
-//     });
+      it('should display the campaign levels (empty)', async function () {
+        expect(campaign.levels).to.have.length(0);
+      });
+    });
 
-//     describe('when a non owner tries to create a level', () => {
-//       it('reverts', async () => {
-//         await expect(
-//           zeronaut
-//             .connect(notOwner)
-//             .setLevel(
-//               campaignId,
-//               ethers.encodeBytes32String('rogue-level'),
-//               notOwner.address
-//             )
-//         ).to.be.revertedWith('Only campaign owner allowed');
-//       });
-//     });
-//   });
-// });
+    describe('when a campaign with the same id is created', function () {
+      it('reverts', async function () {
+        await expect(zeronaut.createCampaign(campaignId)).to.be.revertedWith(
+          'Campaign id already taken'
+        );
+      });
+    });
 
-// async function createCampaign(zeronaut, campaignId) {
-//   await zeronaut.createCampaign(campaignId);
-// }
+    describe('when a non owner tries to create a level', function () {
+      it('reverts', async function () {
+        await expect(
+          zeronaut
+            .connect(notOwner)
+            .setLevel(
+              campaignId,
+              hre.ethers.encodeBytes32String('rogue-level'),
+              notOwner.address
+            )
+        ).to.be.revertedWith('Only campaign owner allowed');
+      });
+    });
+  });
+});
 
-// module.exports = {
-//   createCampaign,
-// };
+async function createCampaign(zeronaut, campaignId) {
+  await zeronaut.createCampaign(campaignId);
+}
+
+module.exports = {
+  createCampaign,
+};
