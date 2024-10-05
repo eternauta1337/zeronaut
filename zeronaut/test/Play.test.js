@@ -1,6 +1,6 @@
-const { deployZeronaut } = require('./Zeronaut.test');
-const { createCampaign } = require('./Campaign.test');
-const { createLevel } = require('./Level.test');
+const { deployZeronaut } = require('./helpers/zeronaut');
+const { createCampaign } = require('./helpers/campaign');
+const { createLevel } = require('./helpers/level');
 const { buildProof } = require('../utils/build-proof');
 const { useFixture } = require('./helpers/fixture');
 

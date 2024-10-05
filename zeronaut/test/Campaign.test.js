@@ -1,5 +1,6 @@
-const { deployZeronaut } = require('./Zeronaut.test');
 const { useFixture } = require('./helpers/fixture');
+const { deployZeronaut } = require('./helpers/zeronaut');
+const { createCampaign } = require('./helpers/campaign');
 
 describe('Campaign', function () {
   useFixture('basic-level');
@@ -66,11 +67,3 @@ describe('Campaign', function () {
     });
   });
 });
-
-async function createCampaign(zeronaut, campaignId) {
-  await zeronaut.createCampaign(campaignId);
-}
-
-module.exports = {
-  createCampaign,
-};

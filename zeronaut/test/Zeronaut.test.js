@@ -1,4 +1,5 @@
 const { useFixture } = require('./helpers/fixture');
+const { deployZeronaut } = require('./helpers/zeronaut');
 
 describe('Zeronaut', function () {
   useFixture('basic-level');
@@ -15,12 +16,3 @@ describe('Zeronaut', function () {
     });
   });
 });
-
-async function deployZeronaut(hre) {
-  const factory = await hre.ethers.getContractFactory('Zeronaut');
-  return await factory.deploy();
-}
-
-module.exports = {
-  deployZeronaut,
-};
