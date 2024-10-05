@@ -1,0 +1,8 @@
+{
+  "file": "test/helpers/setup.js",
+  "ignore": ["test/fixture-projects/**/*"],
+  "timeout": 10000,
+  "spec": "test/**/*.test.js",
+  "recursive": true,
+  "exit": true
+}

@@ -1,0 +1,1 @@
+global.hre = require('hardhat');
