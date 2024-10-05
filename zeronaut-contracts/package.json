@@ -6,8 +6,8 @@
   "scripts": {
     "postinstall": "npm run build",
     "build": "cd test/fixture-projects/basic-level && npm i",
-    "compile": "npx hardhat compile && cd test/fixture-projects/basic-level && npx hardhat compile",
-    "test": "mocha",
+    "compile": "npx hardhat compile && bash scripts/compile-fixtures.sh",
+    "test": "npm run compile && mocha",
     "generate:contract": "bash scripts/generate-contract.sh",
     "generate:acir": "bash scripts/generate-acir.sh",
     "deploy": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost",

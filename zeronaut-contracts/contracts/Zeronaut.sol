@@ -5,8 +5,10 @@ import "./interfaces/ILevel.sol";
 import "./ZeronautStorage.sol";
 import "./utils/AddressUtil.sol";
 import "hardhat/console.sol";
+import {UUPSImplementation} from "./proxy/UUPSImplementation.sol";
+import {OwnableStorage} from "./ownable/OwnableStorage.sol";
 
-contract Zeronaut {
+contract Zeronaut is UUPSImplementation {
     modifier onlyCampaignOwner(bytes32 campaignId) {
         require(ZeronautStorage.load().campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
         _;
@@ -83,5 +85,9 @@ contract Zeronaut {
 
     function isLevelSolved(bytes32 levelId, address player) public view returns (bool) {
         return ZeronautStorage.load().solvers[levelId][player];
+    }
+
+    function getOwner() public view returns (address) {
+        return OwnableStorage.getOwner();
     }
 }

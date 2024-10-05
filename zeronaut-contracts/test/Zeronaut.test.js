@@ -14,5 +14,18 @@ describe('Zeronaut', function () {
     it('should have deployed the contract', async function () {
       expect(zeronaut.target).to.not.be.null;
     });
+
+    it('can retrieve a campaign', async function () {
+      const campaign = await zeronaut.getCampaign(
+        hre.ethers.encodeBytes32String('dummy-campaign')
+      );
+      expect(campaign.owner).to.equal(hre.ethers.ZeroAddress);
+    });
+
+    it('should have the correct owner', async function () {
+      const signers = await hre.ethers.getSigners();
+      const owner = await zeronaut.getOwner();
+      expect(owner).to.equal(signers[0].address);
+    });
   });
 });
