@@ -3,7 +3,6 @@ pragma solidity ^0.8.27;
 
 import "./Verifier.sol";
 import "zeronaut-contracts/contracts/interfaces/ILevel.sol";
-import "zeronaut-contracts/contracts/Zeronaut.sol";
 
 contract DummyLevel is ILevel {
     UltraVerifier verifier;
