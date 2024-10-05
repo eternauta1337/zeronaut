@@ -4,7 +4,7 @@ pragma solidity >=0.8.11 <0.9.0;
 import "./ProxyStorage.sol";
 import "../utils/AddressUtil.sol";
 import "../errors/AddressError.sol";
-import {OwnableStorage} from "../ownership/OwnableStorage.sol";
+import {OwnableStorage} from "../ownable/OwnableStorage.sol";
 
 contract UUPSProxy is ProxyStorage {
     constructor(address firstImplementation, address initialOwner) {
