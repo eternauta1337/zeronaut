@@ -1,7 +1,7 @@
 {
-  "name": "zeronaut",
+  "name": "zeronaut-contracts",
   "version": "1.0.0",
-  "description": "Contracts and utils for Zeronaut",
+  "description": "Contracts for Zeronaut",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha",
