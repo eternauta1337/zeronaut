@@ -5,21 +5,21 @@ import "./interfaces/ILevel.sol";
 import "./ZeronautStorage.sol";
 import "hardhat/console.sol";
 
-contract Zeronaut is ZeronautStorage {
+contract Zeronaut {
     modifier onlyCampaignOwner(bytes32 campaignId) {
-        require(_store().campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
+        require(ZeronautStorage.load().campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
         _;
     }
 
     function setLevel(bytes32 campaignId, bytes32 levelId, address addr) public onlyCampaignOwner(campaignId) {
-        Data storage store = _store();
-        Campaign storage campaign = store.campaigns[campaignId];
+        ZeronautStorage.Store storage store = ZeronautStorage.load();
+        ZeronautStorage.Campaign storage campaign = store.campaigns[campaignId];
 
         // Check if the campaign exists
         require(campaign.id != bytes32(0), "Campaign does not exist");
 
         // Store the level
-        Level storage newLevel = store.levels[levelId];
+        ZeronautStorage.Level storage newLevel = store.levels[levelId];
         newLevel.id = levelId;
         newLevel.addr = addr;
         newLevel.campaignId = campaignId;
@@ -40,10 +40,10 @@ contract Zeronaut is ZeronautStorage {
     }
 
     function solveLevel(bytes32 levelId, bytes calldata proof, bytes32[] calldata publicInputs) public {
-        Data storage store = _store();
+        ZeronautStorage.Store storage store = ZeronautStorage.load();
 
         // Check if the level exists
-        Level storage level = store.levels[levelId];
+        ZeronautStorage.Level storage level = store.levels[levelId];
         require(level.addr != address(0), "Level does not exist");
 
         // Check if the level has already been solved
@@ -97,25 +97,25 @@ contract Zeronaut is ZeronautStorage {
     }
 
     function createCampaign(bytes32 id) public {
-        Data storage store = _store();
+        ZeronautStorage.Store storage store = ZeronautStorage.load();
 
         // TODO: check if id is already taken
         require(store.campaigns[id].owner == address(0), "Campaign id already taken");
 
-        Campaign storage newCampaign = store.campaigns[id];
+        ZeronautStorage.Campaign storage newCampaign = store.campaigns[id];
         newCampaign.id = id;
         newCampaign.owner = msg.sender;
     }
 
-    function getCampaign(bytes32 id) public view returns (Campaign memory) {
-        return _store().campaigns[id];
+    function getCampaign(bytes32 id) public view returns (ZeronautStorage.Campaign memory) {
+        return ZeronautStorage.load().campaigns[id];
     }
 
-    function getLevel(bytes32 id) public view returns (Level memory) {
-        return _store().levels[id];
+    function getLevel(bytes32 id) public view returns (ZeronautStorage.Level memory) {
+        return ZeronautStorage.load().levels[id];
     }
 
     function isLevelSolved(bytes32 levelId, address player) public view returns (bool) {
-        return _store().solvers[levelId][player];
+        return ZeronautStorage.load().solvers[levelId][player];
     }
 }

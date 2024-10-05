@@ -7,7 +7,7 @@ import "../utils/AddressUtil.sol";
 
 event Upgraded(address indexed self, address implementation);
 
-abstract contract UUPSImplementation is ProxyStorage {
+abstract contract UUPSImplementation {
     function upgradeTo(address newImplementation) external {
         OwnableStorage.onlyOwner();
 
@@ -19,7 +19,7 @@ abstract contract UUPSImplementation is ProxyStorage {
             revert("UUPSImplementation: Not a contract");
         }
 
-        ProxyStore storage store = _proxyStore();
+        ProxyStorage.Store storage store = ProxyStorage.load();
 
         if (newImplementation == store.implementation) {
             revert("UUPSImplementation: No change");
@@ -31,6 +31,6 @@ abstract contract UUPSImplementation is ProxyStorage {
     }
 
     function getImplementation() external view returns (address) {
-        return _proxyStore().implementation;
+        return ProxyStorage.load().implementation;
     }
 }

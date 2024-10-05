@@ -5,7 +5,7 @@ import "./ProxyStorage.sol";
 import "../utils/AddressUtil.sol";
 import {OwnableStorage} from "../ownable/OwnableStorage.sol";
 
-contract UUPSProxy is ProxyStorage {
+contract UUPSProxy {
     constructor(address firstImplementation, address initialOwner) {
         if (initialOwner == address(0)) {
             revert("UUPSProxy: Owner is zero");
@@ -21,7 +21,7 @@ contract UUPSProxy is ProxyStorage {
 
         OwnableStorage.load().owner = initialOwner;
 
-        _proxyStore().implementation = firstImplementation;
+        ProxyStorage.load().implementation = firstImplementation;
     }
 
     fallback() external payable {
@@ -54,6 +54,6 @@ contract UUPSProxy is ProxyStorage {
     }
 
     function _getImplementation() internal view virtual returns (address) {
-        return _proxyStore().implementation;
+        return ProxyStorage.load().implementation;
     }
 }

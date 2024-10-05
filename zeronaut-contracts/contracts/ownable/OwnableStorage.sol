@@ -5,12 +5,12 @@ library OwnableStorage {
     bytes32 private constant _SLOT_OWNABLE_STORAGE =
         keccak256(abi.encode("io.zeronaut.ownable"));
 
-    struct Data {
+    struct Store {
         address owner;
         address nominatedOwner;
     }
 
-    function load() internal pure returns (Data storage store) {
+    function load() internal pure returns (Store storage store) {
         bytes32 s = _SLOT_OWNABLE_STORAGE;
         assembly {
             store.slot := s
