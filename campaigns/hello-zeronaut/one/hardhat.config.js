@@ -1,5 +1,5 @@
 require('@nomicfoundation/hardhat-toolbox');
-require('zeronaut');
+require('zeronaut-contracts');
 
 module.exports = {
   solidity: {

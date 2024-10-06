@@ -2,9 +2,7 @@
   "name": "zeronaut-contracts",
   "version": "1.0.0",
   "description": "Contracts for Zeronaut",
-  "main": "src/index.js",
   "scripts": {
-    "postinstall": "npm run build",
     "build": "cd test/fixture-projects/basic-level && npm i",
     "compile": "npx hardhat compile && bash scripts/compile-fixtures.sh",
     "test": "npm run compile && mocha",

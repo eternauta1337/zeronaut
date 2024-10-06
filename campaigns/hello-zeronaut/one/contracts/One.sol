@@ -4,8 +4,8 @@ pragma solidity ^0.8.27;
 import "hardhat/console.sol";
 
 import "./Verifier.sol";
-import {ILevel} from "zeronaut/contracts/interfaces/ILevel.sol";
-import {Zeronaut} from "zeronaut/contracts/Zeronaut.sol";
+import {ILevel} from "zeronaut-contracts/contracts/interfaces/ILevel.sol";
+import {Zeronaut} from "zeronaut-contracts/contracts/Zeronaut.sol";
 
 contract One is ILevel {
     UltraVerifier verifier;
