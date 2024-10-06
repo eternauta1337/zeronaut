@@ -1,12 +1,14 @@
 {
-  "name": "zeronaut",
+  "name": "zeronaut-monorepo",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "description": "Monorepo for the Zeronaut CTF platform",
+  "workspaces": [
+    "packages/*",
+    "packages/campaigns/*"
+  ],
+  "author": "Alejandro Santander",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^8.1.8"
+  }
 }

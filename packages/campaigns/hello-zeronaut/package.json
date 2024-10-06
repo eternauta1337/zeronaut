@@ -1,0 +1,20 @@
+{
+  "name": "hello-zeronaut",
+  "version": "1.0.0",
+  "description": "Hello Zeronaut campaign",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat ignition deploy --network localhost ignition/modules/HelloModule.js",
+    "set": "hardhat run scripts/set-levels.js --network localhost"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.12",
+    "zeronaut-contracts": "^1.0.0"
+  }
+}
