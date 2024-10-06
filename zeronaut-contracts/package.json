@@ -10,8 +10,8 @@
     "test": "npm run compile && mocha",
     "generate:contract": "bash scripts/generate-contract.sh",
     "generate:acir": "bash scripts/generate-acir.sh",
-    "deploy": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost",
-    "deploy:hard": "hardhat ignition deploy ignition/modules/Zeronaut.js --network localhost --reset"
+    "deploy": "hardhat ignition deploy ignition/modules/Proxy.module.js --network localhost",
+    "deploy:upgrade": "hardhat ignition deploy ignition/modules/Upgrade.module.js --network localhost"
   },
   "keywords": [],
   "author": "",
