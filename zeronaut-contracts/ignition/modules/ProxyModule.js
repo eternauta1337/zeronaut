@@ -9,9 +9,9 @@ module.exports = buildModule('ProxyModule', (m) => {
 
   const proxy = m.contract('UUPSProxy', [implementation, owner]);
 
-  const wrappedProxy = m.contractAt('Zeronaut', proxy, {
-    id: 'WrappedProxy',
+  const zeronaut = m.contractAt('Zeronaut', proxy, {
+    id: 'Zeronaut',
   });
 
-  return { wrappedProxy };
+  return { zeronaut, implementation };
 });

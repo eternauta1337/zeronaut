@@ -5,11 +5,11 @@
   "scripts": {
     "build": "cd test/fixture-projects/basic-level && npm i",
     "compile": "npx hardhat compile && bash scripts/compile-fixtures.sh",
-    "test": "npm run compile && mocha",
+    "test": "mocha",
     "generate:contract": "bash scripts/generate-contract.sh",
     "generate:acir": "bash scripts/generate-acir.sh",
-    "deploy": "hardhat ignition deploy ignition/modules/Proxy.module.js --network localhost",
-    "deploy:upgrade": "hardhat ignition deploy ignition/modules/Upgrade.module.js --network localhost"
+    "deploy": "hardhat ignition deploy ignition/modules/ProxyModule.js --network localhost",
+    "deploy:upgrade": "hardhat ignition deploy ignition/modules/UpgradeModule.js --network localhost"
   },
   "keywords": [],
   "author": "",
