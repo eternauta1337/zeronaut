@@ -7,6 +7,24 @@ function getZeronautContract(hre, networkId) {
   return hre.ethers.getContractAt(abi, address);
 }
 
+function getLevelContract(hre, address) {
+  const abi = getLevelABI();
+  return hre.ethers.getContractAt(abi, address);
+}
+
+function getLevelABI() {
+  const packagePath = getPackagePath();
+  const abiPath = path.join(
+    packagePath,
+    'artifacts',
+    'contracts',
+    'interfaces',
+    'ILevel.sol',
+    'ILevel.json'
+  );
+  return JSON.parse(fs.readFileSync(abiPath, 'utf8')).abi;
+}
+
 function getZeronautABI() {
   const packagePath = getPackagePath();
   const abiPath = path.join(
@@ -62,4 +80,5 @@ function getZeronautAddress(networkId) {
 module.exports = {
   getZeronautAddress,
   getZeronautContract,
+  getLevelContract,
 };
