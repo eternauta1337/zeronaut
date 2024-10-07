@@ -15,6 +15,7 @@ library ZeronautStorage {
     struct Campaign {
         bytes32 id;
         address owner;
+        // TODO: Rename to levelsIds?
         bytes32[] levels;
     }
 
