@@ -12,6 +12,7 @@
   "devDependencies": {
     "ethernaut-common": "^1.1.12",
     "hardhat": "^2.22.12",
+    "ethernaut-ui": "^1.1.11",
     "zeronaut-contracts": "^1.0.0"
   }
 }
