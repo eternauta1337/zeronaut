@@ -48,6 +48,7 @@ require('../scopes/play')
       const signer = (await hre.ethers.getSigners())[0];
 
       // Build the proof
+      console.log('Building proof...');
       const { proof, publicInputs: morePublicInputs } = await buildProof(
         signer,
         circuit,
@@ -56,17 +57,18 @@ require('../scopes/play')
       publicInputs.push(...morePublicInputs);
 
       // Check the proof
-      const success = await level.check(proof, publicInputs);
-      if (!success) {
-        throw new Error('Proof is invalid');
-      }
+      console.log('Checking proof...');
+      await level.check(proof, publicInputs);
 
       // Submit the proof
+      console.log('Submitting proof...');
       const tx = await zeronaut.solveLevel(levelId, proof, publicInputs);
       await tx.wait();
 
-      output.successBox('Level solved!');
-    } catch (err) {}
+      return output.resultBox('Level solved!');
+    } catch (err) {
+      return output.errorBox(err);
+    }
   });
 
 async function _collectInputs(abi) {
