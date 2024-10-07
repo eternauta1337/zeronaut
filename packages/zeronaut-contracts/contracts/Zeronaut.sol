@@ -9,6 +9,8 @@ import {UUPSImplementation} from "./proxy/UUPSImplementation.sol";
 import {OwnableStorage} from "./ownable/OwnableStorage.sol";
 
 contract Zeronaut is UUPSImplementation {
+    event CampaignCreated(bytes32 id, address owner);
+
     modifier onlyCampaignOwner(bytes32 campaignId) {
         require(ZeronautStorage.load().campaigns[campaignId].owner == msg.sender, "Only campaign owner allowed");
         _;
@@ -67,12 +69,17 @@ contract Zeronaut is UUPSImplementation {
     function createCampaign(bytes32 id) public {
         ZeronautStorage.Store storage store = ZeronautStorage.load();
 
-        // TODO: check if id is already taken
+        // Ensure id is not already taken
         require(store.campaigns[id].owner == address(0), "Campaign id already taken");
 
+        // Initialize the campaign
         ZeronautStorage.Campaign storage newCampaign = store.campaigns[id];
         newCampaign.id = id;
         newCampaign.owner = msg.sender;
+
+        // Emit an event to log the creation of a new campaign
+        emit CampaignCreated(id, msg.sender);
+
     }
 
     function getCampaign(bytes32 id) public view returns (ZeronautStorage.Campaign memory) {
