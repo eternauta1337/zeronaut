@@ -3,7 +3,7 @@ const { getZeronautContract } = require('zeronaut-contracts/utils/contract');
 const storage = require('../internal/storage');
 const output = require('ethernaut-common/src/ui/output');
 
-require('../scopes/play')
+const task = require('../scopes/play')
   .task('set-campaign', 'Selects the current campaign')
   .addPositionalParam(
     'name',
@@ -41,3 +41,7 @@ require('../scopes/play')
       return output.errorBox(err);
     }
   });
+
+// Ui extensions
+const name = task.positionalParamDefinitions.find((p) => p.name === 'name');
+name.prompt = require('../prompts/campaign');

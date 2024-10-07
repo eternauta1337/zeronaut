@@ -19,7 +19,7 @@ require('../scopes/play')
         return;
       }
 
-      // For each CampaignCreated log, fetch the campaign details
+      // For each CampaignCreated log, print the campaign details
       let str = '';
       for (let i = 0; i < events.length; i++) {
         const { id } = events[i].args;
