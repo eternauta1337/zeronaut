@@ -1,0 +1,17 @@
+{
+  "name": "zeronaut-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ethernaut-common": "^1.1.12",
+    "hardhat": "^2.22.12",
+    "zeronaut-contracts": "^1.0.0"
+  }
+}

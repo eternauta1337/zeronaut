@@ -7,9 +7,6 @@ async function main() {
 
   console.log('Setting levels on network:', hre.network.name);
 
-  // TODO: Rename to "register"?
-  // TODO: Check if the campaign has already been created
-
   // Connect to the Zeronaut contract
   const chainId = (await hre.ethers.provider.getNetwork()).chainId;
   const zeronaut = await hre.ethers.getContractAt(

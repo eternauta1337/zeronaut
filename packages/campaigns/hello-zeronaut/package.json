@@ -7,7 +7,7 @@
     "test": "hardhat test",
     "compile": "hardhat compile",
     "deploy": "hardhat ignition deploy --network localhost ignition/modules/HelloModule.js",
-    "set": "hardhat run scripts/set-levels.js --network localhost"
+    "register": "hardhat run scripts/register-levels.js --network localhost"
   },
   "keywords": [],
   "author": "",
