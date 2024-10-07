@@ -1,4 +1,4 @@
-const { getZeronautAddress } = require('zeronaut-contracts/utils/get-address');
+const { getZeronautContract } = require('zeronaut-contracts/utils/contract');
 const path = require('path');
 const fs = require('fs');
 
@@ -9,10 +9,7 @@ async function main() {
 
   // Connect to the Zeronaut contract
   const chainId = (await hre.ethers.provider.getNetwork()).chainId;
-  const zeronaut = await hre.ethers.getContractAt(
-    'Zeronaut',
-    getZeronautAddress(chainId)
-  );
+  const zeronaut = await getZeronautContract(hre, chainId);
 
   // Check if the campaign has already been created
   const campaignName = 'hello-zeronaut';

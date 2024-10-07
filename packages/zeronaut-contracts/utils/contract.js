@@ -1,13 +1,34 @@
 const fs = require('fs');
 const path = require('path');
 
+function getZeronautContract(hre, networkId) {
+  const address = getZeronautAddress(networkId);
+  const abi = getZeronautABI();
+  return hre.ethers.getContractAt(abi, address);
+}
+
+function getZeronautABI() {
+  const packagePath = getPackagePath();
+  const abiPath = path.join(
+    packagePath,
+    'artifacts',
+    'contracts',
+    'Zeronaut.sol',
+    'Zeronaut.json'
+  );
+  return JSON.parse(fs.readFileSync(abiPath, 'utf8')).abi;
+}
+
+function getPackagePath() {
+  const rootPath = path.join(__dirname, '..', '..', '..');
+  return path.join(rootPath, 'packages', 'zeronaut-contracts');
+}
+
 function getZeronautAddress(networkId) {
   try {
-    const rootPath = path.join(__dirname, '..', '..', '..');
+    const packagePath = getPackagePath();
     const deploymentPath = path.join(
-      rootPath,
-      'packages',
-      'zeronaut-contracts',
+      packagePath,
       'ignition',
       'deployments',
       `chain-${networkId}`,
@@ -40,4 +61,5 @@ function getZeronautAddress(networkId) {
 
 module.exports = {
   getZeronautAddress,
+  getZeronautContract,
 };

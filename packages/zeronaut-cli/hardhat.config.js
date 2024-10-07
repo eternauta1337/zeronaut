@@ -1,5 +1,6 @@
 require('./src/index');
 
+require('@nomicfoundation/hardhat-ethers');
 require('ethernaut-ui');
 
 module.exports = {

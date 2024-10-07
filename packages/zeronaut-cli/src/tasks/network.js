@@ -9,5 +9,5 @@ require('../scopes/play')
     types.string
   )
   .setAction(async ({ name }, hre) => {
-    console.log('network', name);
+    // TODO
   });

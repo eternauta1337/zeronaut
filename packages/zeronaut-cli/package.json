@@ -10,9 +10,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
     "ethernaut-common": "^1.1.12",
-    "hardhat": "^2.22.12",
     "ethernaut-ui": "^1.1.11",
+    "hardhat": "^2.22.12",
     "zeronaut-contracts": "^1.0.0"
   }
 }
