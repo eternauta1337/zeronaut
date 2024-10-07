@@ -1,10 +1,9 @@
 const types = require('ethernaut-common/src/validation/types');
 const { getZeronautContract } = require('zeronaut-contracts/utils/contract');
 const storage = require('../internal/storage');
-const { listLevels } = require('../internal/list-levels');
 
 require('../scopes/play')
-  .task('campaign', 'Selects a campaign')
+  .task('set-campaign', 'Selects the currentcampaign')
   .addPositionalParam(
     'name',
     'The name of the campaign',
@@ -27,13 +26,6 @@ require('../scopes/play')
     if (campaignData.owner === hre.ethers.ZeroAddress) {
       throw new Error(`Campaign "${name}" not found`);
     }
-
-    // Identify the player
-    const signers = await hre.ethers.getSigners();
-    const playerAddress = signers[0].address;
-
-    // List the levels of the campaign
-    await listLevels(hre, chainId, name, playerAddress);
 
     // Lock on campaign
     const data = storage.read();

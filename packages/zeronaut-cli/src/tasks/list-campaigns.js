@@ -1,7 +1,7 @@
 const { getCampaignCreatedLogs } = require('zeronaut-contracts/utils/logs');
 
 require('../scopes/play')
-  .task('campaigns', 'List all campaigns')
+  .task('list-campaigns', 'List all available campaigns')
   .setAction(async ({}, hre) => {
     // Identify the network
     const network = await hre.ethers.provider.getNetwork();
