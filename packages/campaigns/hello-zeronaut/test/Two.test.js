@@ -2,7 +2,7 @@ const hre = require('hardhat');
 const { expect } = require('chai');
 const { buildProof } = require('zeronaut-contracts/utils/build-proof');
 
-describe.only('Two', function () {
+describe('Two', function () {
   let zeronaut, level;
   let circuit;
   let signer;
@@ -24,14 +24,10 @@ describe.only('Two', function () {
 
   it('solves the level', async function () {
     // Build the proof
-    let { proof, publicInputs } = await buildProof(signer, circuit, {
-      number: 1337,
-      factor_1: 7,
-      factor_2: 191,
+    const { proof, publicInputs } = await buildProof(signer, circuit, {
+      factor_1: ethers.zeroPadValue(ethers.toBeHex(7), 32),
+      factor_2: ethers.zeroPadValue(ethers.toBeHex(191), 32),
     });
-    const numberHex = ethers.zeroPadValue(ethers.toBeHex(1337), 32);
-    publicInputs = [...publicInputs, numberHex];
-    console.log('Public inputs:', publicInputs);
 
     // Submit the proof
     await (await zeronaut.solveLevel(levelId, proof, publicInputs)).wait();
