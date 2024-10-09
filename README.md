@@ -5,18 +5,18 @@
 1. Clone the repo
 2. Run `npm install`
 3. Start a local chain
-   3.1 `cd packages/zeronaut-contracts`
-   3.2 `npx hardhat node`
+   1. `cd packages/zeronaut-contracts`
+   2. `npx hardhat node`
 4. Deploy the main contract
-   4.1 `cd packages/zeronaut-contracts`
-   4.2 `npm run deploy`
+   1. `cd packages/zeronaut-contracts`
+   2. `npm run deploy`
 5. Deploy the levels
-   5.1 `cd packages/campaigns/hello-zeronaut`
-   5.2 `npm run deploy`
-   5.3 `npm run register`
+   1. `cd packages/campaigns/hello-zeronaut`
+   2. `npm run deploy`
+   3. `npm run register`
 6. Play the game!
-   6.1 `cd packages/zeronaut-cli`
-   6.2 `npx hardhat play`
-   6.2.1 `set-campaign hello-zeronaut`
-   6.2.2 `set-level One`
-   6.2.3 `play-level`
+   1. `cd packages/zeronaut-cli`
+   2. `npx hardhat play`
+      1. `set-campaign hello-zeronaut`
+      2. `set-level One`
+      3. `play-level`
