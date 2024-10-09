@@ -29,6 +29,7 @@ require('../scopes/play')
       const levelId = hre.ethers.encodeBytes32String(levelName);
       const levelData = await zeronaut.getLevel(levelId);
       const levelAddress = levelData.addr;
+      console.log('Level address:', levelAddress);
 
       // Connect to the level contract
       const level = await getLevelContract(hre, levelAddress);
@@ -42,7 +43,7 @@ require('../scopes/play')
       const circuit = JSON.parse(circuitData);
 
       // Build the circuit and collect the parameters
-      const { inputs, publicInputs } = await _collectInputs(circuit.abi);
+      let { inputs, publicInputs } = await _collectInputs(circuit.abi);
 
       // Identify the signer
       const signer = (await hre.ethers.getSigners())[0];
@@ -54,7 +55,10 @@ require('../scopes/play')
         circuit,
         inputs
       );
-      publicInputs.push(...morePublicInputs);
+      publicInputs = [...morePublicInputs, ...publicInputs];
+      // console.log('Inputs:', inputs);
+      // console.log('Public inputs:', publicInputs);
+      // console.log('Proof:', proof);
 
       // Check the proof
       console.log('Checking proof...');

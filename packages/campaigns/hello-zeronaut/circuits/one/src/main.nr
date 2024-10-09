@@ -1,11 +1,11 @@
 use std::ecdsa_secp256k1;
 
 fn main(
-    password: str<8>,
     signature: [u8; 64],
     pubKeyX: pub [u8; 32],
     pubKeyY: pub [u8; 32],
-    hashedMsg: [u8; 32]
+    hashedMsg: [u8; 32],
+    password: str<8>
 ) {
     assert(ecdsa_secp256k1::verify_signature(pubKeyX, pubKeyY, signature, hashedMsg), "Invalid signature");
     assert(verify_password(password), "Invalid password");
