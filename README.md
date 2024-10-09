@@ -17,3 +17,6 @@
 6. Play the game!
    6.1 `cd packages/zeronaut-cli`
    6.2 `npx hardhat play`
+   6.2.1 `set-campaign hello-zeronaut`
+   6.2.2 `set-level One`
+   6.2.3 `play-level`
