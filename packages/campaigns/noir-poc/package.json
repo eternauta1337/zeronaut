@@ -6,8 +6,7 @@
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
-    "deploy": "hardhat ignition deploy --network localhost ignition/modules/DeployModule.js",
-    "register": "hardhat run scripts/register-levels.js --network localhost"
+    "deploy": "hardhat run scripts/deploy.js --network localhost"
   },
   "keywords": [],
   "author": "",

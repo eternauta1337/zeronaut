@@ -8,8 +8,14 @@ import {ILevel} from "zeronaut-contracts/contracts/interfaces/ILevel.sol";
 import {Zeronaut} from "zeronaut-contracts/contracts/Zeronaut.sol";
 
 contract CodeBreaker is ILevel, UltraVerifier {
-    function instructions() public pure returns (string memory) {
-        return "What is the password required by 0x123?";
+    string _instructions;
+
+    constructor(string memory __instructions) {
+        _instructions = __instructions;
+    }
+
+    function instructions() public view returns (string memory) {
+        return _instructions;
     }
 
     function check(bytes calldata proof, bytes32[] calldata publicInputs) public view returns (bool) {

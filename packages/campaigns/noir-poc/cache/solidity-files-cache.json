@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/ajs/zeronaut/packages/campaigns/noir-poc/contracts/codebreaker/CodeBreaker.sol": {
-      "lastModificationDate": 1728564867803,
-      "contentHash": "bf897172da97fad930945253dd899235",
+      "lastModificationDate": 1728566377973,
+      "contentHash": "fb71fcb3d2c306856d64da32d9816174",
       "sourceName": "contracts/codebreaker/CodeBreaker.sol",
       "solcConfig": {
         "version": "0.8.27",
@@ -377,6 +377,42 @@
       ],
       "artifacts": [
         "ProxyStorage"
+      ]
+    },
+    "/Users/ajs/zeronaut/packages/campaigns/noir-poc/contracts/codebreaker/Safu.sol": {
+      "lastModificationDate": 1728565622470,
+      "contentHash": "8816de311dc22dcfedd4a4f9b0812bf7",
+      "sourceName": "contracts/codebreaker/Safu.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.27"
+      ],
+      "artifacts": [
+        "Safu"
       ]
     }
   }
