@@ -414,6 +414,120 @@
       "artifacts": [
         "Safu"
       ]
+    },
+    "/Users/ajs/zeronaut/packages/campaigns/noir-poc/contracts/txx/Txx.sol": {
+      "lastModificationDate": 1728570304802,
+      "contentHash": "2b55d07ac3dc7cc6e383a6d8a8904079",
+      "sourceName": "contracts/txx/Txx.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Verifier.sol",
+        "zeronaut-contracts/contracts/interfaces/ILevel.sol",
+        "zeronaut-contracts/contracts/Zeronaut.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.27"
+      ],
+      "artifacts": [
+        "Txx"
+      ]
+    },
+    "/Users/ajs/zeronaut/packages/campaigns/noir-poc/contracts/txx/Verifier.sol": {
+      "lastModificationDate": 1728570427872,
+      "contentHash": "cbdc7ffd53a5da9c2a812d93adb618fd",
+      "sourceName": "contracts/txx/Verifier.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.8.4"
+      ],
+      "artifacts": [
+        "BaseUltraVerifier",
+        "UltraVerificationKey",
+        "UltraVerifier"
+      ]
+    },
+    "/Users/ajs/zeronaut/packages/campaigns/noir-poc/contracts/txx/Safuer.sol": {
+      "lastModificationDate": 1728570909606,
+      "contentHash": "49e9a8e9ee9215126034673f574016df",
+      "sourceName": "contracts/txx/Safuer.sol",
+      "solcConfig": {
+        "version": "0.8.27",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.27"
+      ],
+      "artifacts": [
+        "Safuer"
+      ]
     }
   }
 }

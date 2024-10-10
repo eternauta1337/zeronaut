@@ -17,22 +17,54 @@ async function main() {
     name: 'codebreaker',
     address: await deployCodeBreaker(),
   });
+  levels.push({
+    name: 'txx',
+    address: await deployTxx(),
+  });
 
   await registerLevels();
 }
 
+async function deployTxx() {
+  console.log('\nDeploying level: txx');
+
+  console.log('Deploying Safuer');
+  const Safuer = await hre.ethers.getContractFactory('Safuer');
+  const safuer = await Safuer.deploy();
+
+  // Reveal the password in a transaction
+  await (await safuer.solve('zeronaut')).wait();
+  await (await safuer.solve('zerpnaut')).wait();
+  await (await safuer.solve('zer0naut')).wait();
+  await (await safuer.solve('zerznaut')).wait();
+
+  console.log('Verifying Safuer');
+  if (hre.network.name !== 'localhost') {
+    // TODO: Verify on etherscan
+  }
+
+  console.log('Deploying Txx');
+  const Txx = await hre.ethers.getContractFactory('Txx');
+  const instructions = `"What is the password required by ${safuer.target}?"`;
+  console.log('Instructions:', instructions);
+  const level = await Txx.deploy(instructions);
+
+  return level.target;
+}
+
 async function deployCodeBreaker() {
+  console.log('\nDeploying level: codebreaker');
+
   console.log('Deploying Safu');
   const Safu = await hre.ethers.getContractFactory('Safu');
   const safu = await Safu.deploy();
 
   console.log('Verifying Safu');
-  console.log('Network:', hre.network.name);
   if (hre.network.name !== 'localhost') {
     // TODO: Verify on etherscan
   }
 
-  console.log('Deploying level "codebreaker"');
+  console.log('Deploying CodeBreaker');
   const CodeBreaker = await hre.ethers.getContractFactory('CodeBreaker');
   const instructions = `"What is the password required by ${safu.target}?"`;
   console.log('Instructions:', instructions);
@@ -42,7 +74,7 @@ async function deployCodeBreaker() {
 }
 
 async function registerLevels() {
-  console.log('Registering levels');
+  console.log('\nRegistering levels');
 
   let tx;
 
