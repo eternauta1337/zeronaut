@@ -1,0 +1,20 @@
+{
+  "name": "noir-poc",
+  "version": "1.0.0",
+  "description": "Zeronaut POC for Noir",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat ignition deploy --network localhost ignition/modules/DeployModule.js",
+    "register": "hardhat run scripts/register-levels.js --network localhost"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.12",
+    "zeronaut-contracts": "^1.0.0"
+  }
+}

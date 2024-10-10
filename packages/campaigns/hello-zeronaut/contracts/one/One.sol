@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.27;
 
-import "hardhat/console.sol";
-
 import {UltraVerifier} from "./Verifier.sol";
 import {ILevel} from "zeronaut-contracts/contracts/interfaces/ILevel.sol";
 import {Zeronaut} from "zeronaut-contracts/contracts/Zeronaut.sol";
