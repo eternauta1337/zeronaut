@@ -21,8 +21,36 @@ async function main() {
     name: 'txx',
     address: await deployTxx(),
   });
+  levels.push({
+    name: 'zxx',
+    address: await deployZxx(),
+  });
 
   await registerLevels();
+}
+
+async function deployZxx() {
+  console.log('\nDeploying level: zxx');
+
+  console.log('Deploying Safuest');
+  const Safuest = await hre.ethers.getContractFactory('Safuest');
+  const safuest = await Safuest.deploy();
+
+  // Submit proof
+  // await (await safuer.solve('zeronaut')).wait();
+
+  console.log('Verifying Safuest');
+  if (hre.network.name !== 'localhost') {
+    // TODO: Verify on etherscan
+  }
+
+  console.log('Deploying Zxx');
+  const Zxx = await hre.ethers.getContractFactory('Zxx');
+  const instructions = `"What is the password required by ${safuest.target}?"`;
+  console.log('Instructions:', instructions);
+  const level = await Zxx.deploy(instructions);
+
+  return level.target;
 }
 
 async function deployTxx() {
