@@ -10,7 +10,7 @@
     "generate:acir": "bash scripts/generate-acir.sh",
     "deploy": "hardhat ignition deploy ignition/modules/ZeronautModule.js",
     "deploy:upgrade": "hardhat ignition deploy ignition/modules/UpgradeModule.js",
-    "verify": "hardhat ignition verify"
+    "verify": "hardhat ignition verify --include-unrelated-contracts"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,8 @@
     "@noir-lang/backend_barretenberg": "0.31.0",
     "@noir-lang/noir_js": "0.31.0",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@nomicfoundation/hardhat-ignition-etherscan": "^0.15.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.5",
     "dotenv": "^16.4.5",
     "hardhat": "^2.22.11",
     "mocha": "^10.7.3"
