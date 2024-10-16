@@ -1,4 +1,5 @@
 require('@nomicfoundation/hardhat-toolbox');
+require('../../../');
 
 module.exports = {
   solidity: {

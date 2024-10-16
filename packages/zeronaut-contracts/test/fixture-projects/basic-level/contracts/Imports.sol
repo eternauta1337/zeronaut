@@ -3,3 +3,4 @@ pragma solidity ^0.8.27;
 
 import "zeronaut-contracts/contracts/Zeronaut.sol";
 import "zeronaut-contracts/contracts/proxy/UUPSProxy.sol";
+import "zeronaut-contracts/contracts/Level.sol";
