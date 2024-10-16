@@ -6,13 +6,16 @@
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
-    "deploy": "hardhat run scripts/deploy.js --network localhost"
+    "register": "hardhat run scripts/register.js",
+    "deploy": "hardhat ignition deploy ignition/modules/LevelsModule.js",
+    "verify": "hardhat ignition verify --include-unrelated-contracts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
     "hardhat": "^2.22.12",
     "zeronaut-contracts": "^1.0.0"
   }

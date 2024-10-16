@@ -12,20 +12,21 @@ async function main() {
   await connect();
   await createCampaignIfNeeded();
 
-  levels.push({
-    name: 'codebreaker',
-    address: await deployCodeBreaker(),
-  });
-  levels.push({
-    name: 'txx',
-    address: await deployTxx(),
-  });
-  levels.push({
-    name: 'zxx',
-    address: await deployZxx(),
-  });
+  const deployedAddresses = retrieveDeployedAddressesFromIgnition();
+  // levels.push({
+  //   name: 'codebreaker',
+  //   address: await deployCodeBreaker(),
+  // });
+  // levels.push({
+  //   name: 'txx',
+  //   address: await deployTxx(),
+  // });
+  // levels.push({
+  //   name: 'zxx',
+  //   address: await deployZxx(),
+  // });
 
-  await registerLevels();
+  // await registerLevels();
 }
 
 async function deployZxx() {
@@ -105,6 +106,12 @@ async function deployCodeBreaker() {
   const level = await CodeBreaker.deploy(instructions);
 
   return level.target;
+}
+
+function retrieveDeployedAddressesFromIgnition() {
+  const deployedAddressesJSON = require('../ignition/deployed-addresses.json');
+  // const deployedAddresses = hre.ignition.getDeployedAddresses();
+  // console.log('Deployed addresses:', deployedAddresses);
 }
 
 async function registerLevels() {
