@@ -1,25 +1,19 @@
-const hre = require('hardhat');
 const { expect } = require('chai');
 const { buildProof } = require('zeronaut-contracts/utils/build-proof');
+const { registerLevel } = require('./helpers/register-level');
 
 describe('Two', function () {
-  let zeronaut, level;
+  let zeronaut;
   let circuit;
   let signer;
-  let campaignId = ethers.encodeBytes32String('hello');
-  let levelId = ethers.encodeBytes32String('two');
+  let campaignId, levelId;
 
   before('bootstrap', async function () {
-    // Id signers
-    [signer] = await hre.ethers.getSigners();
-    // Deploy contracts
-    zeronaut = await hre.ethers.deployContract('Zeronaut', []);
-    level = await hre.ethers.deployContract('Two');
-    // Create campaign and set level
-    await (await zeronaut.createCampaign(campaignId)).wait();
-    await (await zeronaut.setLevel(campaignId, levelId, level.target)).wait();
-    // Retrieve the level's circuit
-    circuit = JSON.parse(await level.circuit());
+    ({ zeronaut, signer, circuit, levelId } = await registerLevel({
+      levelName: 'two',
+      circuitName: 'two',
+      verifierName: 'TwoVerifier',
+    }));
   });
 
   it('solves the level', async function () {
