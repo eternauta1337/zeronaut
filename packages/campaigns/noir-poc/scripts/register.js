@@ -2,34 +2,73 @@ const { getZeronautContract } = require('zeronaut-contracts/utils/contract');
 const { buildProof } = require('zeronaut-contracts/utils/build-proof');
 
 let zeronaut;
-const levels = [];
+let chainId;
 const campaignName = 'noir-poc';
 const campaignId = hre.ethers.encodeBytes32String(campaignName);
 
 async function main() {
-  console.log('Setting levels on network:', hre.network.name);
-
+  console.log('Registering levels on network:', hre.network.name);
+  chainId = (await hre.ethers.provider.getNetwork()).chainId;
   await connect();
   await createCampaignIfNeeded();
-
-  const deployedAddresses = retrieveDeployedAddressesFromIgnition();
-  // levels.push({
-  //   name: 'codebreaker',
-  //   address: await deployCodeBreaker(),
-  // });
-  // levels.push({
-  //   name: 'txx',
-  //   address: await deployTxx(),
-  // });
-  // levels.push({
-  //   name: 'zxx',
-  //   address: await deployZxx(),
-  // });
-
+  await configureLevels();
   // await registerLevels();
 }
 
-async function deployZxx() {
+async function configureLevels() {
+  await configureLevel1();
+  // await configureLevel2();
+  // await configureLevel3();
+}
+
+async function configureLevel1() {
+  console.log('\nConfiguring level 1');
+
+  // Id level
+  const levelAddress = getDeployedAddressFromIgnitionDeployment('Level1');
+
+  // Set instructions
+  const safuAddress = getDeployedAddressFromIgnitionDeployment('Safu');
+  const instructions = `"What is the password required by ${safuAddress}?"`;
+  console.log('Instructions:', instructions);
+  await (await safu.setInstructions(instructions)).wait();
+
+  // Set verifier
+  const verifierAddress =
+    getDeployedAddressFromIgnitionDeployment('Level1Verifier');
+  await (await safu.setVerifier(verifierAddress)).wait();
+
+  return safu.target;
+}
+
+async function configureLevel2() {
+  console.log('\nDeploying level: txx');
+
+  console.log('Deploying Safuer');
+  const Safuer = await hre.ethers.getContractFactory('Safuer');
+  const safuer = await Safuer.deploy();
+
+  // Reveal the password in a transaction
+  await (await safuer.solve('zeronaut')).wait();
+  await (await safuer.solve('zerpnaut')).wait();
+  await (await safuer.solve('zer0naut')).wait();
+  await (await safuer.solve('zerznaut')).wait();
+
+  console.log('Verifying Safuer');
+  if (hre.network.name !== 'localhost') {
+    // TODO: Verify on etherscan
+  }
+
+  console.log('Deploying Txx');
+  const Txx = await hre.ethers.getContractFactory('Txx');
+  const instructions = `"What is the password required by ${safuer.target}?"`;
+  console.log('Instructions:', instructions);
+  const level = await Txx.deploy(instructions);
+
+  return level.target;
+}
+
+async function configureLevel3() {
   console.log('\nDeploying level: zxx');
 
   console.log('Deploying Safuest');
@@ -60,60 +99,6 @@ async function deployZxx() {
   return level.target;
 }
 
-async function deployTxx() {
-  console.log('\nDeploying level: txx');
-
-  console.log('Deploying Safuer');
-  const Safuer = await hre.ethers.getContractFactory('Safuer');
-  const safuer = await Safuer.deploy();
-
-  // Reveal the password in a transaction
-  await (await safuer.solve('zeronaut')).wait();
-  await (await safuer.solve('zerpnaut')).wait();
-  await (await safuer.solve('zer0naut')).wait();
-  await (await safuer.solve('zerznaut')).wait();
-
-  console.log('Verifying Safuer');
-  if (hre.network.name !== 'localhost') {
-    // TODO: Verify on etherscan
-  }
-
-  console.log('Deploying Txx');
-  const Txx = await hre.ethers.getContractFactory('Txx');
-  const instructions = `"What is the password required by ${safuer.target}?"`;
-  console.log('Instructions:', instructions);
-  const level = await Txx.deploy(instructions);
-
-  return level.target;
-}
-
-async function deployCodeBreaker() {
-  console.log('\nDeploying level: codebreaker');
-
-  console.log('Deploying Safu');
-  const Safu = await hre.ethers.getContractFactory('Safu');
-  const safu = await Safu.deploy();
-
-  console.log('Verifying Safu');
-  if (hre.network.name !== 'localhost') {
-    // TODO: Verify on etherscan
-  }
-
-  console.log('Deploying CodeBreaker');
-  const CodeBreaker = await hre.ethers.getContractFactory('CodeBreaker');
-  const instructions = `"What is the password required by ${safu.target}?"`;
-  console.log('Instructions:', instructions);
-  const level = await CodeBreaker.deploy(instructions);
-
-  return level.target;
-}
-
-function retrieveDeployedAddressesFromIgnition() {
-  const deployedAddressesJSON = require('../ignition/deployed-addresses.json');
-  // const deployedAddresses = hre.ignition.getDeployedAddresses();
-  // console.log('Deployed addresses:', deployedAddresses);
-}
-
 async function registerLevels() {
   console.log('\nRegistering levels');
 
@@ -136,6 +121,15 @@ async function registerLevels() {
       await tx.wait();
     }
   }
+}
+
+function getDeployedAddressFromIgnitionDeployment(contractName) {
+  const addresses = JSON.parse(
+    fs.readFileSync(
+      `../ignition/deployments/${chainId}/deployed_addresses.json`
+    )
+  );
+  return addresses[`DeployModule#${contractName}`];
 }
 
 async function createCampaignIfNeeded() {

@@ -1,27 +1,11 @@
 const { buildModule } = require('@nomicfoundation/hardhat-ignition/modules');
 
-const AccesoriesModule = require('./accessories');
-
 module.exports = buildModule('LevelsModule', (m) => {
-  const stuff = m.useModule(AccesoriesModule);
-  console.log('stuff', stuff);
+  const levels = [];
 
-  let levels = {};
-
-  // Codebreaker
-  // const safu = m.contract('Safu', [], {
-  //   id: 'Safu',
-  // });
-  // const instructions = `What is the password required by ${safu}?`;
-  levels.codebreaker = m.contract('CodeBreaker', ['hello'], {
-    after: [stuff],
-  });
-
-  // Txx
-  // TODO
-
-  // Zxx
-  // TODO
+  // Deploy all levels
+  levels.push(m.useModule(require('./level1')));
+  levels.push(m.useModule(require('./level2')));
 
   return levels;
 });

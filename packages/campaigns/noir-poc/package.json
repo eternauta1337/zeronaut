@@ -7,7 +7,7 @@
     "test": "hardhat test",
     "compile": "hardhat compile",
     "register": "hardhat run scripts/register.js",
-    "deploy": "hardhat ignition deploy ignition/modules/LevelsModule.js",
+    "deploy": "hardhat ignition deploy ignition/modules/deploy.js --network localhost",
     "verify": "hardhat ignition verify --include-unrelated-contracts"
   },
   "keywords": [],

@@ -16,10 +16,12 @@ module.exports = {
   networks: {
     localhost: {
       url: 'http://127.0.0.1:8545',
+      chainId: 31337,
     },
     op_sepolia: {
       url: 'https://sepolia.optimism.io',
       accounts: [process.env.PRIVATE_KEY],
+      chainId: 11155420,
       ignition: {
         maxFeePerGasLimit: 50_000_000_000n, // 50 gwei
         maxPriorityFeePerGas: 2_000_000_000n, // 2 gwei
