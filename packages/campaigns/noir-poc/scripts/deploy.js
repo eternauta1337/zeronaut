@@ -1,6 +1,7 @@
 const { getZeronautContract } = require('zeronaut-contracts/utils/contract');
-// const { buildProof } = require('zeronaut-contracts/utils/build-proof');
 const { deploy: deployLevel1 } = require('./level1');
+const { deploy: deployLevel2 } = require('./level2');
+const { deploy: deployLevel3 } = require('./level3');
 
 let chainId;
 let campaignId;
@@ -16,6 +17,8 @@ async function main() {
   console.log('\nDeploying levels...');
   const levels = [];
   levels.push(await deployLevel1(hre));
+  levels.push(await deployLevel2(hre));
+  levels.push(await deployLevel3(hre));
 
   console.log('\nCreating campaign...');
   await createCampaignIfNeeded();
@@ -50,7 +53,7 @@ async function registerLevels(levels) {
       );
       continue;
     } else {
-      console.log(`Setting level ${level.name} to ${level.target}`);
+      console.log(`Setting level "${level.name}" to ${level.target}`);
       tx = await zeronaut.setLevel(campaignId, levelId, level.target);
       await tx.wait();
     }
