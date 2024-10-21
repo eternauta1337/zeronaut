@@ -21,13 +21,13 @@ module.exports = {
     op_sepolia: {
       url: 'https://sepolia.optimism.io',
       accounts: [process.env.PRIVATE_KEY],
-      chainId: 11155420,
       ignition: {
         maxFeePerGasLimit: 50_000_000_000n, // 50 gwei
         maxPriorityFeePerGas: 2_000_000_000n, // 2 gwei
         gasPrice: 50_000_000_000n, // 50 gwei
         disableFeeBumping: false,
       },
+      chainId: 11155420,
     },
   },
   etherscan: {

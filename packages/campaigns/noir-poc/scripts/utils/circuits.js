@@ -8,7 +8,7 @@ function getCircuit(levelName) {
 function getCircuitPath(levelName) {
   return path.join(
     __dirname,
-    '../../../circuits',
+    '../../circuits',
     `${levelName}`,
     'target',
     'circuits.json'
